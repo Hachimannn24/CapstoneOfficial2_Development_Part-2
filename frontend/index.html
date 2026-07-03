@@ -1253,14 +1253,9 @@
                                     <select id="intake-appt-minute" class="bg-transparent text-xs font-bold text-gray-900 outline-none w-full cursor-pointer"></select>
                                 </div>
                             </div>
-                            <div class="md:col-span-1">
-                                <label
-                                    class="text-[10px] text-gray-800 font-bold uppercase tracking-wider mb-1 block">Type of Lane</label>
-                                <select id="intake-lane-type"
-                                    class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 focus:border-red-600 focus:bg-white outline-none font-semibold text-xs text-gray-900 transition cursor-pointer">
-                                    <option value="Flexible (Ordinary)">Flexible (Ordinary)</option>
-                                    <option value="Express Lane">Express Lane</option>
-                                    <option value="Special Lane">Special Lane</option>
+                            <div class="md:col-span-1 hidden">
+                                <select id="intake-lane-type" class="hidden">
+                                    <option value="Flexible (Ordinary)" selected>Flexible (Ordinary)</option>
                                 </select>
                             </div>
                             <div class="md:col-span-1 flex items-center mt-5">
@@ -1273,12 +1268,9 @@
                             </div>
                         </div>
                         
-                        <!-- Concerns (Walk-in only) -->
-                        <div id="div-concern-field" class="md:col-span-4 hidden mt-4">
-                            <label
-                                class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Specific Concerns / Notes</label>
-                            <textarea id="intake-concern" placeholder="Describe the vehicle issue..."
-                                class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2 focus:border-red-600 focus:bg-white outline-none font-semibold text-xs h-16 text-gray-900 transition resize-none"></textarea>
+                        <!-- Concerns (Walk-in only - Hidden) -->
+                        <div id="div-concern-field" class="hidden">
+                            <textarea id="intake-concern" class="hidden"></textarea>
                         </div>
                     </div>
                     <button onclick="processIntake()" id="intake-submit-btn"
@@ -1334,8 +1326,7 @@
                             <div class="p-2 bg-red-50 rounded-lg text-red-600"><i data-lucide="list-todo"
                                     class="w-5 h-5"></i></div>
                             <div>
-                                <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Daily Intakes
-                                    Table</h3>
+                                <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Daily Intakes - Marikina</h3>
                                 <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Active
                                     Vehicles in Workshop</p>
                             </div>
@@ -1348,15 +1339,13 @@
                                     <th>Claim Stub</th>
                                     <th>Plate No.</th>
                                     <th>Model & Category</th>
-                                    <th>Branch</th>
+                                    <th>Source</th>
                                     <th>Arrival</th>
                                     <th>Departure</th>
-                                    <th>Parts</th>
                                     <th>Evaluation / Diagnosis</th>
                                     <th>Status</th>
                                     <th>Location</th>
-                                    <th>Remarks / Reasons</th>
-                                    <th>Action</th>
+                                    <th>Reasons</th>
                                 </tr>
                             </thead>
                             <tbody id="table-daily-intakes"></tbody>
@@ -1397,11 +1386,10 @@
                                     <th class="px-3 py-3.5 bg-gray-55">Plate No.</th>
                                     <th class="px-3 py-3.5 bg-gray-55">Model</th>
                                     <th class="px-3 py-3.5 bg-gray-55">Date (Received, Promised)</th>
-                                    <th class="px-3 py-3.5 bg-gray-55">Parts</th>
                                     <th class="px-3 py-3.5 bg-gray-55">Service Advisor</th>
                                     <th class="px-3 py-3.5 bg-gray-55">Evaluation</th>
                                     <th class="px-3 py-3.5 bg-gray-55">Status</th>
-                                    <th class="px-3 py-3.5 bg-gray-55">Remarks / Reasons</th>
+                                    <th class="px-3 py-3.5 bg-gray-55">Reasons</th>
                                     <th class="px-3 py-3.5 text-right w-48 bg-gray-55">Action</th>
                                 </tr>
                             </thead>
@@ -1543,6 +1531,7 @@
                             <div class="flex gap-2 justify-end mt-2">
                                 <span id="tv-dot-0" class="w-2.5 h-2.5 rounded-full bg-gray-600 transition-all"></span>
                                 <span id="tv-dot-1" class="w-2.5 h-2.5 rounded-full bg-gray-600 transition-all"></span>
+                                <span id="tv-dot-2" class="w-2.5 h-2.5 rounded-full bg-gray-600 transition-all"></span>
                             </div>
                         </div>
                     </div>
@@ -1604,6 +1593,37 @@
                             </div>
                             <div class="p-4 bg-orange-50/20 flex-1 overflow-y-auto custom-scroll">
                                 <div id="tv-all-carryover-list" class="grid grid-cols-3 gap-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="tv-slide-3"
+                        class="absolute inset-0 tv-slide hidden flex flex-col bg-white rounded-2xl overflow-hidden shadow-2xl">
+                        <div class="bg-red-600 py-6 text-center shrink-0 border-b border-red-700">
+                            <h2 class="text-5xl font-black uppercase tracking-widest text-white">Workshop Lanes Monitoring</h2>
+                            <p class="text-red-200 font-bold uppercase tracking-[0.2em] text-sm mt-2">Live Lane Status</p>
+                        </div>
+                        <div class="flex-1 p-8 overflow-hidden bg-gray-50 flex gap-8">
+                            <!-- Express Lane Column -->
+                            <div class="flex-1 bg-white rounded-2xl border border-red-200 overflow-hidden flex flex-col shadow-sm">
+                                <div class="bg-red-50 py-3 text-center border-b border-red-100 shrink-0">
+                                    <h3 class="text-xl font-black uppercase tracking-wider text-red-700">Express Lane</h3>
+                                </div>
+                                <div class="p-4 flex-1 overflow-y-auto custom-scroll space-y-3" id="tv-express-lane-list"></div>
+                            </div>
+                            <!-- Flexible Lane Column -->
+                            <div class="flex-1 bg-white rounded-2xl border border-blue-200 overflow-hidden flex flex-col shadow-sm">
+                                <div class="bg-blue-50 py-3 text-center border-b border-blue-100 shrink-0">
+                                    <h3 class="text-xl font-black uppercase tracking-wider text-blue-700">Flexible Lane</h3>
+                                </div>
+                                <div class="p-4 flex-1 overflow-y-auto custom-scroll space-y-3" id="tv-flexible-lane-list"></div>
+                            </div>
+                            <!-- Special Lane Column -->
+                            <div class="flex-1 bg-white rounded-2xl border border-purple-200 overflow-hidden flex flex-col shadow-sm">
+                                <div class="bg-purple-50 py-3 text-center border-b border-purple-100 shrink-0">
+                                    <h3 class="text-xl font-black uppercase tracking-wider text-purple-700">Specialty Lane</h3>
+                                </div>
+                                <div class="p-4 flex-1 overflow-y-auto custom-scroll space-y-3" id="tv-special-lane-list"></div>
                             </div>
                         </div>
                     </div>
@@ -2318,6 +2338,34 @@
         </div>
     </div>
 
+    <!-- Beautiful Custom Delete Confirmation Modal -->
+    <div id="delete-confirm-modal"
+        class="fixed inset-0 z-[800] hidden flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl p-6 border border-gray-100 text-center space-y-5">
+            <div class="w-14 h-14 bg-red-50 rounded-2xl flex items-center justify-center mx-auto text-red-600 border border-red-100">
+                <i data-lucide="alert-triangle" class="w-7 h-7"></i>
+            </div>
+            <div>
+                <h3 class="text-xl font-black text-gray-900 tracking-tight">Confirm Deletion</h3>
+                <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest mt-1">This action cannot be undone</p>
+            </div>
+            <p class="text-xs text-gray-600 font-medium leading-relaxed" id="delete-confirm-message">
+                Are you sure you want to permanently delete this booking record?
+            </p>
+            <input type="hidden" id="delete-confirm-job-id">
+            <div class="flex gap-3 pt-2">
+                <button onclick="closeDeleteConfirmModal()"
+                    class="flex-1 py-3 bg-gray-100 hover:bg-gray-250 text-gray-700 font-black uppercase text-[10px] tracking-wider rounded-xl transition">
+                    Cancel
+                </button>
+                <button onclick="confirmDeleteJob()"
+                    class="flex-1 py-3 bg-red-600 hover:bg-red-700 text-white font-black uppercase text-[10px] tracking-wider rounded-xl transition shadow-md shadow-red-600/10">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Carry-Over Details Modal -->
     <div id="carryover-modal" class="fixed inset-0 z-[700] hidden flex items-center justify-center bg-black/60 backdrop-blur-sm">
         <div class="bg-white rounded-3xl p-6 max-w-md w-full border border-gray-200 shadow-2xl space-y-4">
@@ -2340,12 +2388,13 @@
                         <option value="Awaiting Parts">Awaiting Parts</option>
                         <option value="Extended Repair">Extended Repair</option>
                         <option value="Technician Unavailable">Technician Unavailable</option>
+                        <option value="WCA">WCA (Waiting Customer Approval)</option>
                         <option value="Others">Others</option>
                     </select>
                 </div>
                 <div>
-                    <label class="text-[10px] text-gray-655 font-bold uppercase tracking-wider mb-1 block">Reasons / Remarks <span class="text-red-500">*</span></label>
-                    <textarea id="carryover-remarks" placeholder="Specify parts delay, technician unavailability, or extended repair scope..." class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 focus:border-orange-500 outline-none font-semibold text-xs h-24 resize-none"></textarea>
+                    <label class="text-[10px] text-gray-655 font-bold uppercase tracking-wider mb-1 block">Reasons <span class="text-red-500">*</span></label>
+                    <textarea id="carryover-remarks" placeholder="Specify reasons..." class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 focus:border-orange-500 outline-none font-semibold text-xs h-24 resize-none"></textarea>
                 </div>
             </div>
             <div class="flex gap-3 justify-end pt-2">
@@ -2490,6 +2539,7 @@
         // Analytics dashboard globals
         let currentDashboardTab = 'monitor';
         let saIntakeFilter = 'All';
+        let intakeSearchQuery = '';
         let analyticsJobs = [];
         let chartInstances = {
             volTrend: null,
@@ -3218,7 +3268,7 @@
                 source.value = 'Walk-in';
                 walkinFields.classList.remove('hidden');
                 bookingFields.classList.add('hidden');
-                if (concernField) concernField.classList.remove('hidden');
+                if (concernField) concernField.classList.add('hidden');
                 updateStubPreview();
             }
         }
@@ -3340,7 +3390,7 @@
             try {
                 // Auto-calculate goal status if moving to end states
                 const job = allJobs.find(j => j.id === jobId);
-                if (job && (newStatus === 'Ready' || newStatus === 'Released' || newStatus === 'Completed')) {
+                if (job && (newStatus === 'Ready' || newStatus === 'Ready to Release' || newStatus === 'Released' || newStatus === 'Completed')) {
                     const computed = calculateGoalStatusForJob(job);
                     if (computed !== 'N/A' && job.goalStatus !== computed) {
                         await apiRequest(`/api/jobs/${jobId}/field`, {
@@ -3398,14 +3448,28 @@
             }
         }
 
-        async function removeJob(jobId) {
-            if (!confirm("Remove this record entirely from the database?")) return;
+        function removeJob(jobId) {
+            const job = allJobs.find(j => j.id === jobId);
+            if (!job) return;
+            document.getElementById('delete-confirm-job-id').value = jobId;
+            document.getElementById('delete-confirm-message').innerText = `Are you sure you want to permanently delete the booking for ${job.name} (${job.plate})?`;
+            document.getElementById('delete-confirm-modal').classList.remove('hidden');
+        }
+
+        function closeDeleteConfirmModal() {
+            document.getElementById('delete-confirm-modal').classList.add('hidden');
+        }
+
+        async function confirmDeleteJob() {
+            const jobId = document.getElementById('delete-confirm-job-id').value;
+            if (!jobId) return;
+            closeDeleteConfirmModal();
             try {
                 await apiRequest(`/api/jobs/${jobId}`, { method: 'DELETE' });
                 await loadData();
                 renderStaffTables();
                 renderTV();
-                showSystemToast('Job record deleted successfully.', 'success');
+                showSystemToast('Job record deleted successfully.', 'success', 'Record Deleted');
             } catch (err) {
                 showSystemToast(err.message || 'Error deleting job.', 'error');
             }
@@ -3443,9 +3507,8 @@
         async function updateJobTimeField(jobId, field, partValue, partType) {
             const job = allJobs.find(j => j.id === jobId);
             if (!job) return;
-            let currentVal = job[field] || '08:00';
-            if (!currentVal.includes(':')) currentVal = '08:00';
-            const parts = currentVal.split(':');
+            const current24 = convertTimeTo24Hour(job[field]);
+            const parts = current24.split(':');
             let hour = parts[0];
             let minute = parts[1];
             
@@ -3503,19 +3566,67 @@
             }
         }
 
+        function convertTimeTo24Hour(timeStr) {
+            if (!timeStr) return '08:00';
+            const totalMins = parseTimeToMinutes(timeStr);
+            if (totalMins === null) return '08:00';
+            const hrs = Math.floor(totalMins / 60) % 24;
+            const mins = totalMins % 60;
+            return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
+        }
+
+        function parseTimeToMinutes(timeStr) {
+            if (!timeStr) return null;
+            const lower = timeStr.toLowerCase();
+            let isPm = lower.includes('pm');
+            let clean = timeStr.replace(/am|pm/gi, '').trim();
+            const parts = clean.split(':');
+            if (parts.length < 2) return null;
+            let hour = parseInt(parts[0], 10);
+            let minute = parseInt(parts[1], 10);
+            if (isNaN(hour) || isNaN(minute)) return null;
+            if (lower.includes('am') || lower.includes('pm')) {
+                if (isPm && hour < 12) hour += 12;
+                if (!isPm && hour === 12) hour = 0;
+            }
+            return hour * 60 + minute;
+        }
+
+        async function confirmActiveOnlineJob(jobId) {
+            try {
+                const now = new Date();
+                const currHour = String(now.getHours()).padStart(2, '0');
+                const currMin = String(now.getMinutes()).padStart(2, '0');
+                const arrivalTime = `${currHour}:${currMin}`;
+                
+                await apiRequest(`/api/jobs/${jobId}/field`, {
+                    method: 'PATCH',
+                    body: { field: 'arrival', value: arrivalTime }
+                });
+                
+                await apiRequest(`/api/jobs/${jobId}/status`, {
+                    method: 'PATCH',
+                    body: { status: 'Waiting' }
+                });
+                
+                await loadData();
+                renderStaffTables();
+                renderTV();
+                showSystemToast('Booking activated successfully.', 'success', 'Active Intake');
+            } catch (err) {
+                showSystemToast(err.message || 'Error activating booking.', 'error');
+            }
+        }
+
         function calculateGoalStatusForJob(job) {
             const isPMS = job.category && job.category.toUpperCase().includes('PMS');
             if (!isPMS) return 'N/A';
             if (!job.arrival || !job.departure) return 'N/A';
             try {
-                const arrivalClean = formatTime12Hour(job.arrival);
-                const departureClean = formatTime12Hour(job.departure);
-                const [arrH, arrM] = arrivalClean.split(':').map(Number);
-                const [depH, depM] = departureClean.split(':').map(Number);
-                if (isNaN(arrH) || isNaN(arrM) || isNaN(depH) || isNaN(depM)) return 'N/A';
+                const arrMin = parseTimeToMinutes(job.arrival);
+                const depMin = parseTimeToMinutes(job.departure);
+                if (arrMin === null || depMin === null) return 'N/A';
 
-                const arrMin = arrH * 60 + arrM;
-                const depMin = depH * 60 + depM;
                 let diff = depMin - arrMin;
                 if (diff < 0) diff += 24 * 60;
                 return diff <= 120 ? 'Successful' : 'Failed';
@@ -3556,38 +3667,27 @@
                             <td><div class="font-black italic text-gray-700 text-lg">${job.plate}</div></td>
                             <td class="text-gray-500 text-sm">${job.vehicle}</td>
                             <td>
-                                <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-xs w-36 border border-gray-200 bg-white cursor-pointer font-bold">
-                                    <option value="Flexible (Ordinary)" ${job.laneType === 'Flexible (Ordinary)' ? 'selected' : ''}>Flexible (Ordinary)</option>
-                                    <option value="Express Lane" ${job.laneType === 'Express Lane' ? 'selected' : ''}>Express Lane</option>
-                                    <option value="Special Lane" ${job.laneType === 'Special Lane' ? 'selected' : ''}>Special Lane</option>
-                                </select>
+                                <span class="text-xs font-bold text-gray-700">${job.laneType || 'Flexible (Ordinary)'}</span>
                             </td>
                             <td>
-                                <div class="flex gap-2">
-                                    <input type="date" value="${job.apptDate}" onchange="updateJobField('${job.id}', 'apptDate', this.value)" class="table-select text-sm w-32 border border-gray-200">
-                                    <div class="flex items-center gap-1">
-                                        <select onchange="updateJobTimeField('${job.id}', 'apptTime', this.value, 'hour')" class="table-select text-xs w-14 border border-gray-200 bg-white">
-                                            ${getHourOptions(job.apptTime ? job.apptTime.split(':')[0] : '08')}
-                                        </select>
-                                        <span class="text-gray-400 font-bold">:</span>
-                                        <select onchange="updateJobTimeField('${job.id}', 'apptTime', this.value, 'minute')" class="table-select text-xs w-14 border border-gray-200 bg-white">
-                                            ${getMinuteOptions(job.apptTime ? job.apptTime.split(':')[1] : '00')}
-                                        </select>
-                                    </div>
-                                </div>
+                                <span class="text-xs font-semibold text-gray-700">${job.apptDate || ''} @ ${formatTime12Hour(job.apptTime)}</span>
                             </td>
                             <td>
                                 <span class="text-xs font-bold uppercase ${job.partsAvailable === 'Yes' ? 'text-green-600' : job.partsAvailable === 'No' ? 'text-red-600' : 'text-gray-500'}">${job.partsAvailable}</span>
                             </td>
                             <td class="text-center">
-                                <input type="checkbox" ${job.confirmed ? 'checked' : ''} onchange="updateCheckbox('${job.id}', 'confirmed', this.checked)">
+                                <span class="text-xs font-bold ${job.confirmed ? 'text-green-600' : 'text-gray-400'}">${job.confirmed ? 'Yes' : 'No'}</span>
                             </td>
                             <td>
-                                <input type="text" value="${job.remarks || ''}" onchange="updateJobField('${job.id}', 'remarks', this.value)" class="table-select text-xs w-36 border border-gray-200 bg-white" placeholder="Type action..." title="Only Assistant can edit action details prior to master queue push.">
+                                <span class="text-xs text-gray-700 font-medium">${job.remarks || '-'}</span>
                             </td>
                             <td class="text-right flex items-center justify-end gap-2">
-                                <button onclick="setJobStatus('${job.id}', 'Waiting')" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold uppercase transition shadow-sm">Push Active</button>
-                                <button onclick="removeJob('${job.id}')" class="text-gray-400 hover:text-red-500 p-1 transition"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                                <button onclick="confirmActiveOnlineJob('${job.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-extrabold uppercase transition shadow-md shadow-emerald-500/10 flex items-center gap-1">
+                                    <i data-lucide="check" class="w-3.5 h-3.5"></i> Confirm Active
+                                </button>
+                                <button onclick="removeJob('${job.id}')" class="border border-red-200 hover:border-red-500 text-red-500 hover:bg-red-50 p-2 rounded-xl transition flex items-center justify-center" title="Delete Booking">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                </button>
                             </td>
                         </tr>
                         `;
@@ -3642,7 +3742,6 @@
                                 <th class="px-3 py-3.5 bg-gray-50">Claim Stub</th>
                                 <th class="px-3 py-3.5 bg-gray-50">Plate No.</th>
                                 <th class="px-3 py-3.5 bg-gray-50">Model & Category</th>
-                                <th class="px-3 py-3.5 bg-gray-50">Branch</th>
                                 <th class="px-3 py-3.5 bg-gray-50">Source</th>
                                 <th class="px-3 py-3.5 bg-gray-50">Arrival</th>
                                 <th class="px-3 py-3.5 bg-gray-50">Departure</th>
@@ -3651,8 +3750,7 @@
                                 ${showGoal ? '<th class="px-3 py-3.5 bg-gray-50">SLA Status (2h)</th>' : ''}
                                 <th class="px-3 py-3.5 bg-gray-50">Status</th>
                                 <th class="px-3 py-3.5 bg-gray-50">Location</th>
-                                <th class="px-3 py-3.5 bg-gray-50">Remarks / Reasons</th>
-                                <th class="px-3 py-3.5 text-right w-44 bg-gray-50">Action</th>
+                                <th class="px-3 py-3.5 bg-gray-50">Reasons</th>
                             </tr>
                         </thead>
                     `;
@@ -3682,7 +3780,17 @@
                             <!-- Model & Category -->
                             <td class="px-3 py-4">
                                 <div class="font-bold text-gray-900">${job.vehicle}</div>
-                                <div class="text-[10px] text-gray-500 font-bold uppercase mb-1">${job.category} ${job.saName ? `| SA: ${job.saName}` : '| Unassigned'}</div>
+                                <div class="text-[10px] text-gray-500 font-bold uppercase mb-1 flex items-center gap-1">
+                                    ${isEditable ? `
+                                    <select onchange="updateJobField('${job.id}', 'category', this.value)" class="table-select text-[10px] font-bold uppercase border border-gray-200 bg-white cursor-pointer py-0.5">
+                                        <option value="PMS" ${job.category === 'PMS' ? 'selected' : ''}>PMS</option>
+                                        <option value="GRS" ${job.category === 'GRS' ? 'selected' : ''}>GRS</option>
+                                        <option value="PMS AND GRS" ${job.category === 'PMS AND GRS' ? 'selected' : ''}>PMS AND GRS</option>
+                                        <option value="Others" ${['PMS', 'GRS', 'PMS AND GRS'].includes(job.category) ? '' : 'selected'}>Others</option>
+                                    </select>
+                                    ` : `<span>${job.category}</span>`}
+                                    <span>${job.saName ? `| SA: ${job.saName}` : '| Unassigned'}</span>
+                                </div>
                                 ${isEditable ? `
                                 <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-[10px] font-bold uppercase w-36 border border-gray-200 bg-white cursor-pointer block mt-1">
                                     <option value="Flexible (Ordinary)" ${job.laneType === 'Flexible (Ordinary)' ? 'selected' : ''}>Flexible (Ordinary)</option>
@@ -3694,9 +3802,6 @@
                                 `}
                             </td>
                             
-                            <!-- Branch -->
-                            <td class="px-3 py-4"><span class="text-xs font-semibold text-gray-700">${job.branch || 'Branch A'}</span></td>
-                            
                             <!-- Source -->
                             <td class="px-3 py-4">
                                 <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase ${job.source === 'Online' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'}">${job.source || 'Walk-in'}</span>
@@ -3707,11 +3812,11 @@
                                 ${canEditArrival ? `
                                 <div class="flex items-center gap-1">
                                     <select onchange="updateJobTimeField('${job.id}', 'arrival', this.value, 'hour')" class="table-select text-xs w-14 border border-gray-200 bg-white">
-                                        ${getHourOptions(job.arrival ? job.arrival.split(':')[0] : '08')}
+                                        ${getHourOptions(convertTimeTo24Hour(job.arrival).split(':')[0])}
                                     </select>
                                     <span class="text-gray-400 font-bold">:</span>
                                     <select onchange="updateJobTimeField('${job.id}', 'arrival', this.value, 'minute')" class="table-select text-xs w-14 border border-gray-200 bg-white">
-                                        ${getMinuteOptions(job.arrival ? job.arrival.split(':')[1] : '00')}
+                                        ${getMinuteOptions(convertTimeTo24Hour(job.arrival).split(':')[1])}
                                     </select>
                                 </div>
                                 ` : `<span class="text-sm font-medium text-gray-600">${formatTime12Hour(job.arrival)}</span>`}
@@ -3722,11 +3827,11 @@
                                 ${isEditable ? `
                                 <div class="flex items-center gap-1">
                                     <select onchange="updateJobTimeField('${job.id}', 'departure', this.value, 'hour')" class="table-select text-xs w-14 border border-gray-200 bg-white">
-                                        ${getHourOptions(job.departure ? job.departure.split(':')[0] : '17')}
+                                        ${getHourOptions(convertTimeTo24Hour(job.departure).split(':')[0])}
                                     </select>
                                     <span class="text-gray-400 font-bold">:</span>
                                     <select onchange="updateJobTimeField('${job.id}', 'departure', this.value, 'minute')" class="table-select text-xs w-14 border border-gray-200 bg-white">
-                                        ${getMinuteOptions(job.departure ? job.departure.split(':')[1] : '00')}
+                                        ${getMinuteOptions(convertTimeTo24Hour(job.departure).split(':')[1])}
                                     </select>
                                 </div>
                                 ` : `<span class="text-sm font-medium text-gray-600">${formatTime12Hour(job.departure)}</span>`}
@@ -3791,14 +3896,15 @@
                             <!-- Status -->
                             <td class="px-3 py-4">
                                 ${isEditable ? `
-                                <select onchange="handleStatusChange('${job.id}', this.value, this)" class="table-select font-bold text-xs uppercase w-40 border border-gray-200 bg-white" style="${job.status === 'Ready' ? 'color:#10b981' : job.status === 'Carry Over' ? 'color:#f97316' : 'color:#374151'}">
+                                <select onchange="handleStatusChange('${job.id}', this.value, this)" class="table-select font-bold text-xs uppercase w-40 border border-gray-200 bg-white" style="${job.status === 'Ready to Release' || job.status === 'Ready' ? 'color:#10b981' : job.status === 'Carry Over' ? 'color:#f97316' : 'color:#374151'}">
                                     <option value="Waiting" ${job.status === 'Waiting' ? 'selected' : ''}>Waiting</option>
+                                    <option value="Monitoring" ${job.status === 'Monitoring' ? 'selected' : ''}>Monitoring</option>
                                     <option value="In Progress" ${job.status === 'In Progress' || job.status.startsWith('Lift') ? 'selected' : ''} disabled>In Progress</option>
-                                    <option value="Ready" ${job.status === 'Ready' ? 'selected' : ''}>Ready (Show TV)</option>
+                                    <option value="Ready to Release" ${job.status === 'Ready to Release' || job.status === 'Ready' ? 'selected' : ''}>Ready to Release</option>
                                     <option value="Carry Over" ${job.status === 'Carry Over' ? 'selected' : ''}>Carry Over</option>
-                                    <option value="Released" ${job.status === 'Released' ? 'selected' : ''}>Released (Remove List)</option>
+                                    <option value="Released" ${job.status === 'Released' ? 'selected' : ''}>Released</option>
                                 </select>
-                                ` : `<span class="px-2 py-1 rounded bg-gray-100 text-xs font-bold uppercase text-gray-700">${job.status}</span>`}
+                                ` : `<span class="px-2 py-1 rounded bg-gray-100 text-xs font-bold uppercase text-gray-700">${job.status === 'Ready' ? 'Ready to Release' : job.status}</span>`}
                             </td>
 
                             <!-- Location -->
@@ -3818,25 +3924,11 @@
                                 </select>
                                 ` : (job.location && job.location.startsWith('Lift')) ? `<span class="px-2 py-1 rounded bg-red-100 text-xs font-bold uppercase text-red-700">${job.location}</span>` : `<span class="px-2 py-1 rounded bg-gray-100 text-xs font-bold uppercase text-gray-500">Waiting Area</span>`}
                             </td>
-                            
-                            <!-- Remarks -->
+                            <!-- Remarks / Reasons -->
                             <td class="px-3 py-4">
                                 ${isEditable ? `
-                                <input type="text" value="${job.remarks || ''}" placeholder="Remarks/Reasons..." onchange="updateJobField('${job.id}', 'remarks', this.value)" class="table-select text-gray-900 border border-gray-200 w-36 bg-white">
+                                <input type="text" value="${job.remarks || ''}" placeholder="Reasons..." onchange="updateJobField('${job.id}', 'remarks', this.value)" class="table-select text-gray-900 border border-gray-250 w-36 bg-white">
                                 ` : `<span class="text-sm font-medium text-gray-600">${job.remarks || '-'}</span>`}
-                            </td>
-
-                            <!-- Action -->
-                            <td class="px-3 py-4 text-right">
-                                <div class="flex items-center gap-2 justify-end">
-                                    ${job.status === 'Released' && isEditable ? `
-                                        <button onclick="completeRelease('${job.id}')" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg text-[11px] font-black uppercase transition shadow-sm whitespace-nowrap flex items-center gap-1" title="Finalize and remove from list">
-                                            <i data-lucide="check-square" class="w-3.5 h-3.5"></i> Released
-                                        </button>
-                                    ` : isEditable ? `
-                                        <input type="text" value="${job.concern || ''}" placeholder="Edit Concerns/Notes..." onchange="updateJobField('${job.id}', 'concern', this.value)" class="table-select text-gray-900 border border-gray-200 w-36 bg-white text-left text-xs">
-                                    ` : `<span class="text-xs font-semibold text-gray-600">${job.concern || '-'}</span>`}
-                                </div>
                             </td>
                         </tr>
                         `;
@@ -3846,36 +3938,24 @@
                 const dailyIntakesEl = document.getElementById('container-daily-intakes');
                 if (dailyIntakesEl) {
                     let filteredActiveJobs = [...activeJobs];
-                    if (isSA && saIntakeFilter !== 'All') {
-                        filteredActiveJobs = filteredActiveJobs.filter(j => j.source === saIntakeFilter);
+                    if (intakeSearchQuery) {
+                        const q = intakeSearchQuery.toLowerCase();
+                        filteredActiveJobs = filteredActiveJobs.filter(j =>
+                            (j.plate && j.plate.toLowerCase().includes(q)) ||
+                            (j.name && j.name.toLowerCase().includes(q)) ||
+                            (j.vehicle && j.vehicle.toLowerCase().includes(q)) ||
+                            (j.claimStub && j.claimStub.toLowerCase().includes(q)) ||
+                            (j.category && j.category.toLowerCase().includes(q))
+                        );
                     }
 
                     dailyIntakesEl.innerHTML = `
                         <div class="space-y-6">
-                            ${isSA ? `
-                            <!-- Walk-in / Online Radio Filters -->
-                            <div class="flex items-center gap-4 bg-gray-50 p-3 rounded-xl border border-gray-205 self-start">
-                                <span class="text-xs font-black uppercase text-gray-500 tracking-wider">Source Filter:</span>
-                                <label class="inline-flex items-center gap-1.5 cursor-pointer">
-                                    <input type="radio" name="saIntakeFilter" value="All" ${saIntakeFilter === 'All' ? 'checked' : ''} onchange="saIntakeFilter = this.value; renderStaffTables();" class="w-4 h-4 text-red-600 border-gray-300 focus:ring-red-500">
-                                    <span class="text-xs font-bold text-gray-700">All</span>
-                                </label>
-                                <label class="inline-flex items-center gap-1.5 cursor-pointer">
-                                    <input type="radio" name="saIntakeFilter" value="Online" ${saIntakeFilter === 'Online' ? 'checked' : ''} onchange="saIntakeFilter = this.value; renderStaffTables();" class="w-4 h-4 text-red-600 border-gray-300 focus:ring-red-500">
-                                    <span class="text-xs font-bold text-gray-700">Online</span>
-                                </label>
-                                <label class="inline-flex items-center gap-1.5 cursor-pointer">
-                                    <input type="radio" name="saIntakeFilter" value="Walk-in" ${saIntakeFilter === 'Walk-in' ? 'checked' : ''} onchange="saIntakeFilter = this.value; renderStaffTables();" class="w-4 h-4 text-red-600 border-gray-300 focus:ring-red-500">
-                                    <span class="text-xs font-bold text-gray-700">Walk-In</span>
-                                </label>
-                            </div>
-                            ` : ''}
-
                             <div class="flex items-center justify-between mb-4">
                                 <div class="flex items-center gap-3">
                                     <div class="p-2 bg-red-50 rounded-lg text-red-600"><i data-lucide="list-todo" class="w-5 h-5"></i></div>
                                     <div>
-                                        <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Daily Intakes Table</h3>
+                                        <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Daily Intakes - Marikina</h3>
                                         <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Active Vehicles in Workshop</p>
                                     </div>
                                 </div>
@@ -3884,7 +3964,7 @@
                                 <table class="w-full text-left whitespace-nowrap min-w-[800px]">
                                     ${getTableHeaderHtml()}
                                     <tbody>
-                                        ${renderJobRows(isSA ? filteredActiveJobs : activeJobs) || `<tr><td colspan="${showGoal ? 15 : 14}" class="text-center py-8 text-gray-500 font-medium">No active vehicles in the queue.</td></tr>`}
+                                        ${renderJobRows(filteredActiveJobs) || `<tr><td colspan="${showGoal ? 12 : 11}" class="text-center py-8 text-gray-500 font-medium">No active vehicles in the queue.</td></tr>`}
                                     </tbody>
                                 </table>
                             </div>
@@ -3927,17 +4007,7 @@
                                 ${isEditable ? `<input type="date" value="${job.promisedDate || ''}" onchange="updateJobField('${job.id}', 'promisedDate', this.value)" class="table-select text-orange-600 font-bold text-sm w-32 border border-gray-200 bg-white">` : `<span class="text-orange-600 font-bold text-sm w-28">${job.promisedDate || 'TBD'}</span>`}
                             </div>
                         </td>
-                        <td class="px-3 py-4">
-                            ${isEditable ? `
-                            <select onchange="updateJobField('${job.id}', 'partsAvailable', this.value)" class="table-select font-bold text-xs uppercase w-28 border border-gray-200 bg-white" style="${job.partsAvailable === 'Yes' ? 'color:#10b981' : job.partsAvailable === 'No' ? 'color:#ef4444' : job.partsAvailable === 'WCA' ? 'color:#f97316' : 'color:#6b7280'}">
-                                <option value="Yes" ${job.partsAvailable === 'Yes' ? 'selected' : ''}>Yes</option>
-                                <option value="No" ${job.partsAvailable === 'No' ? 'selected' : ''}>No</option>
-                                <option value="Pending" ${job.partsAvailable === 'Pending' ? 'selected' : ''}>Pend</option>
-                                <option value="WCA" ${job.partsAvailable === 'WCA' ? 'selected' : ''}>WCA</option>
-                            </select>
-                            ` : `<span class="text-xs font-bold uppercase ${job.partsAvailable === 'Yes' ? 'text-green-600' : job.partsAvailable === 'No' ? 'text-red-600' : job.partsAvailable === 'WCA' ? 'text-orange-600' : 'text-gray-500'}">${job.partsAvailable}</span>`}
-                        </td>
-                        <td class="px-3 py-4"><span class="text-gray-700 text-sm font-semibold">${job.saName || '-'}</span></td>
+                        <td class="px-3 py-4"><span class="text-gray-750 text-sm font-semibold">${job.saName || '-'}</span></td>
                         <td class="px-3 py-4">
                             ${isEditable ? `<input type="text" value="${job.evaluation || ''}" onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-gray-900 font-medium w-48 border border-gray-200 bg-white">` : `<span class="text-gray-700 text-sm">${job.evaluation || '-'}</span>`}
                         </td>
@@ -3947,19 +4017,20 @@
                                 <option value="Awaiting Parts" ${job.carryOverStatus === 'Awaiting Parts' ? 'selected' : ''}>Awaiting Parts</option>
                                 <option value="Extended Repair" ${job.carryOverStatus === 'Extended Repair' ? 'selected' : ''}>Extended Repair</option>
                                 <option value="Technician Unavailable" ${job.carryOverStatus === 'Technician Unavailable' ? 'selected' : ''}>Technician Unavailable</option>
+                                <option value="WCA" ${job.carryOverStatus === 'WCA' ? 'selected' : ''}>WCA (Waiting Customer Approval)</option>
                                 <option value="Others" ${job.carryOverStatus === 'Others' ? 'selected' : ''}>Others</option>
                             </select>
                             ` : `<span class="text-xs font-bold uppercase text-gray-700">${job.carryOverStatus || 'Awaiting Parts'}</span>`}
                         </td>
                         <td class="px-3 py-4">
-                            ${isEditable ? `<input type="text" value="${job.remarks || ''}" placeholder="Reasons for delay..." onchange="updateJobField('${job.id}', 'remarks', this.value)" class="table-select text-gray-900 font-medium w-48 border border-gray-200 bg-white">` : `<span class="text-gray-700 text-sm block">${job.remarks || '-'}</span>`}
+                            ${isEditable ? `<input type="text" value="${job.remarks || ''}" placeholder="Reasons..." onchange="updateJobField('${job.id}', 'remarks', this.value)" class="table-select text-gray-900 font-medium w-48 border border-gray-200 bg-white">` : `<span class="text-gray-700 text-sm block">${job.remarks || '-'}</span>`}
                         </td>
                         <td class="px-3 py-4 text-right">
                             ${actions}
                         </td>
                     </tr>
                     `;
-                }).join('') || `<tr><td colspan="8" class="text-center py-8 text-gray-500 font-medium">No carry over vehicles.</td></tr>`;
+                }).join('') || `<tr><td colspan="7" class="text-center py-8 text-gray-500 font-medium">No carry over vehicles.</td></tr>`;
             }
 
             lucide.createIcons();
@@ -3969,6 +4040,8 @@
         function handleStatusChange(jobId, newStatus, selectElement) {
             if (newStatus === 'Carry Over') {
                 openCarryoverModal(jobId, selectElement);
+            } else if (newStatus === 'Released') {
+                completeRelease(jobId);
             } else {
                 setJobStatus(jobId, newStatus);
             }
@@ -4095,7 +4168,7 @@
             const remarks = document.getElementById('carryover-remarks').value.trim();
             
             if (!promisedDate || !remarks) {
-                return alert('Promised date and remarks/reasons are required.');
+                return alert('Promised date and reasons are required.');
             }
             
             try {
@@ -4368,12 +4441,11 @@
             let countTimed = 0;
 
             timedJobs.forEach(j => {
-                const [ah, am] = j.arrival.split(':').map(Number);
-                const [dh, dm] = j.departure.split(':').map(Number);
-                let diff = (dh * 60 + dm) - (ah * 60 + am);
-                if (diff < 0) diff += 24 * 60; // overnight adjustment
-
-                if (!isNaN(diff)) {
+                const arrMin = parseTimeToMinutes(j.arrival);
+                const depMin = parseTimeToMinutes(j.departure);
+                if (arrMin !== null && depMin !== null) {
+                    let diff = depMin - arrMin;
+                    if (diff < 0) diff += 24 * 60; // overnight adjustment
                     totalMinutes += diff;
                     countTimed++;
                 }
@@ -4413,11 +4485,11 @@
                 let totalMin = 0;
                 let count = 0;
                 timedList.forEach(j => {
-                    const [ah, am] = j.arrival.split(':').map(Number);
-                    const [dh, dm] = j.departure.split(':').map(Number);
-                    let diff = (dh * 60 + dm) - (ah * 60 + am);
-                    if (diff < 0) diff += 24 * 60;
-                    if (!isNaN(diff)) {
+                    const arrMin = parseTimeToMinutes(j.arrival);
+                    const depMin = parseTimeToMinutes(j.departure);
+                    if (arrMin !== null && depMin !== null) {
+                        let diff = depMin - arrMin;
+                        if (diff < 0) diff += 24 * 60;
                         totalMin += diff;
                         count++;
                     }
@@ -5067,11 +5139,14 @@
             let totalMinutes = 0;
             let countTimed = 0;
             timedJobs.forEach(j => {
-                const [ah, am] = j.arrival.split(':').map(Number);
-                const [dh, dm] = j.departure.split(':').map(Number);
-                let diff = (dh * 60 + dm) - (ah * 60 + am);
-                if (diff < 0) diff += 24 * 60;
-                if (!isNaN(diff)) { totalMinutes += diff; countTimed++; }
+                const arrMin = parseTimeToMinutes(j.arrival);
+                const depMin = parseTimeToMinutes(j.departure);
+                if (arrMin !== null && depMin !== null) {
+                    let diff = depMin - arrMin;
+                    if (diff < 0) diff += 24 * 60;
+                    totalMinutes += diff;
+                    countTimed++;
+                }
             });
             const avgMinutes = countTimed > 0 ? Math.round(totalMinutes / countTimed) : 0;
             const durationText = countTimed > 0 ? `${Math.floor(avgMinutes / 60)}h ${avgMinutes % 60}m` : 'N/A';
@@ -5213,11 +5288,14 @@
             let totalMinutes = 0;
             let countTimed = 0;
             timedJobs.forEach(j => {
-                const [ah, am] = j.arrival.split(':').map(Number);
-                const [dh, dm] = j.departure.split(':').map(Number);
-                let diff = (dh * 60 + dm) - (ah * 60 + am);
-                if (diff < 0) diff += 24 * 60;
-                if (!isNaN(diff)) { totalMinutes += diff; countTimed++; }
+                const arrMin = parseTimeToMinutes(j.arrival);
+                const depMin = parseTimeToMinutes(j.departure);
+                if (arrMin !== null && depMin !== null) {
+                    let diff = depMin - arrMin;
+                    if (diff < 0) diff += 24 * 60;
+                    totalMinutes += diff;
+                    countTimed++;
+                }
             });
             const avgMinutes = countTimed > 0 ? Math.round(totalMinutes / countTimed) : 0;
             const durationText = countTimed > 0 ? `${Math.floor(avgMinutes / 60)}h ${avgMinutes % 60}m` : 'N/A';
@@ -5405,7 +5483,7 @@
         }
 
         function rotateTVSlides() {
-            const slides = ['tv-slide-1', 'tv-slide-2'];
+            const slides = ['tv-slide-1', 'tv-slide-2', 'tv-slide-3'];
             const currentEl = document.getElementById(slides[tvSlideIndex]);
             if (!currentEl) return;
             currentEl.classList.remove('fade-in');
@@ -5420,7 +5498,7 @@
                     nextEl.classList.add('fade-in');
                 }
 
-                [0, 1].forEach(i => {
+                [0, 1, 2].forEach(i => {
                     const dot = document.getElementById(`tv-dot-${i}`);
                     if (dot) {
                         dot.className = `w-3 h-3 rounded-full transition-all ${i === tvSlideIndex ? 'bg-red-500 scale-125' : 'bg-gray-600'}`;
@@ -5463,10 +5541,10 @@
         }
 
         function renderTV() {
-            // Group 1: Waiting Jobs (Upcoming Queue)
-            const waitingJobs = allJobs.filter(j => j.status === 'Waiting');
-            // Group 2: Released (Ready, Released)
-            const releasedAll = allJobs.filter(j => j.status === 'Ready' || j.status === 'Released');
+            // Group 1: Waiting Jobs (Upcoming Queue) - Monitoring status shows on TV waiting list
+            const waitingJobs = allJobs.filter(j => j.status === 'Monitoring');
+            // Group 2: Released (Ready, Ready to Release)
+            const releasedAll = allJobs.filter(j => j.status === 'Ready' || j.status === 'Ready to Release');
             // Group 3: Carry Over (Carry Over)
             const carryOverAll = allJobs.filter(j => j.status === 'Carry Over');
 
@@ -5500,8 +5578,8 @@
                             <span class="text-lg font-black uppercase italic text-gray-900 tracking-tighter">${job.plate}</span>
                             <span class="text-[10px] font-bold uppercase tracking-widest text-gray-500">${job.vehicle} | <span class="text-green-600 font-extrabold">${job.category}</span></span>
                         </div>
-                        <span class="${job.status === 'Released' ? 'bg-gray-100 text-gray-600' : 'bg-green-100 text-green-800'} font-extrabold text-[9px] uppercase tracking-wider px-2 py-0.5 rounded">
-                            ${job.status === 'Released' ? 'Released' : 'Ready'}
+                        <span class="bg-green-100 text-green-800 font-extrabold text-[9px] uppercase tracking-wider px-2 py-0.5 rounded">
+                            Ready
                         </span>
                     </div>
                 `).join('') || `<div class="w-full text-center py-8 text-green-500/60 font-black uppercase italic text-sm tracking-widest">Waiting for Completed Jobs</div>`;
@@ -5554,6 +5632,45 @@
                 }
                 tvGRS.innerHTML = liftsHTML;
             }
+            // Slide 3: Lane Monitoring lists (Express, Flexible, Specialty)
+            const activeLaneJobs = allJobs.filter(j => (j.status === 'Monitoring' || j.status === 'Ready' || j.status === 'Ready to Release' || (j.location && j.location.startsWith('Lift'))) && j.status !== 'Completed' && j.status !== 'Released');
+            const renderLaneJobCard = (job) => {
+                const theme = getServiceTheme(job.category);
+                let statusBadge = '';
+                if (job.location && job.location.startsWith('Lift')) {
+                    statusBadge = `<span class="${theme.bgBadge} text-white font-extrabold text-[8px] uppercase tracking-wider px-2 py-0.5 rounded-full">${job.location}</span>`;
+                } else if (job.status === 'Ready' || job.status === 'Ready to Release') {
+                    statusBadge = `<span class="bg-green-150 text-green-700 border border-green-200 font-extrabold text-[8px] uppercase tracking-wider px-2 py-0.5 rounded-full">READY</span>`;
+                } else {
+                    statusBadge = `<span class="bg-blue-50 text-blue-700 border border-blue-100 font-extrabold text-[8px] uppercase tracking-wider px-2 py-0.5 rounded-full">MONITORING</span>`;
+                }
+                return `
+                    <div class="bg-white border-l-4 ${theme.border} rounded-xl p-3 flex flex-col gap-2 shadow-sm hover:scale-[1.01] transition-transform duration-200 text-left">
+                        <div class="flex items-center justify-between">
+                            <span class="text-base font-black uppercase italic text-gray-900 tracking-tighter">${job.plate}</span>
+                            ${statusBadge}
+                        </div>
+                        <div class="flex items-center justify-between text-[10px] text-gray-500 font-bold uppercase tracking-wider">
+                            <span>${job.vehicle}</span>
+                            <span class="${theme.text}">${job.category}</span>
+                        </div>
+                    </div>
+                `;
+            };
+
+            const expressList = document.getElementById('tv-express-lane-list');
+            const flexibleList = document.getElementById('tv-flexible-lane-list');
+            const specialList = document.getElementById('tv-special-lane-list');
+            if (expressList) {
+                expressList.innerHTML = activeLaneJobs.filter(j => j.laneType === 'Express Lane').map(renderLaneJobCard).join('') || `<div class="text-center py-6 text-gray-400 font-semibold text-xs italic">No Vehicles</div>`;
+            }
+            if (flexibleList) {
+                flexibleList.innerHTML = activeLaneJobs.filter(j => j.laneType === 'Flexible (Ordinary)' || !j.laneType).map(renderLaneJobCard).join('') || `<div class="text-center py-6 text-gray-400 font-semibold text-xs italic">No Vehicles</div>`;
+            }
+            if (specialList) {
+                specialList.innerHTML = activeLaneJobs.filter(j => j.laneType === 'Special Lane').map(renderLaneJobCard).join('') || `<div class="text-center py-6 text-gray-400 font-semibold text-xs italic">No Vehicles</div>`;
+            }
+
             lucide.createIcons();
             startTVAutoScroll();
         }
