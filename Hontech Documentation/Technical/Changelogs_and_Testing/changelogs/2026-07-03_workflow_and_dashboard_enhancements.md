@@ -33,6 +33,13 @@ This update resolves critical time calculation bugs caused by 12-hour format str
 - **TV monitor**:
   - Created Slide 3 displaying Express Lane, Flexible Lane, and Specialty Lane populated dynamically from the active jobs.
 
+### 2nd Revision Updates (July 3, 2026)
+- **Time Selector**: Prevented clipping of hour/minute dropdown selections by adding `shrink-0 min-w-[56px]` Tailwind classes.
+- **Custom Release Dialog**: Implemented custom modal `#release-confirm-modal` to completely replace the standard browser `confirm()` dialogue. This eliminates white screen rendering/freezing during release actions.
+- **Colum Cleanups**: Removed "GRS Recommendation" and "Reasons" columns from Daily Intakes table; removed "Reasons" column from Carry-Over table.
+- **Status Select**: Removed `In Progress` status and reordered options to: `Waiting`, `Monitoring`, `Carry Over`, `Ready to Release`, `Released`.
+- **Advanced Filtering**: Added a filter bar above Daily Intakes containing Source filter (All, Online, Walk-in), Sort By filter (Claim Stub, Arrival Time), and Time filter (prototype). Focus state is automatically persisted during search input typing.
+
 ---
 
 ## 🧪 Verification Verification Result
