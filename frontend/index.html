@@ -727,38 +727,8 @@
                     </button>
                 </div>
 
-                <!-- TAB 1: LIVE OPERATIONS MONITOR -->
-                <div id="db-tab-monitor" class="space-y-8">
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                        <div class="bg-white border-b-4 border-gray-800 p-8 rounded-2xl shadow-md text-center">
-                            <p class="text-xs font-black text-gray-500 uppercase tracking-widest mb-2">Total Daily
-                                Intake</p>
-                            <h3 class="text-5xl font-black text-gray-900" id="metric-intake">0</h3>
-                            <p class="text-[10px] text-red-600 font-bold uppercase mt-2">Vehicles Registered</p>
-                        </div>
-                        <div class="bg-white border-b-4 border-green-600 p-8 rounded-2xl shadow-md text-center">
-                            <p class="text-xs font-black text-gray-500 uppercase tracking-widest mb-2">Released Today
-                            </p>
-                            <h3 class="text-5xl font-black text-gray-900" id="metric-completed">0</h3>
-                            <p class="text-[10px] text-green-600 font-bold uppercase mt-2">Services Completed</p>
-                        </div>
-                        <div class="bg-white border-b-4 border-orange-500 p-8 rounded-2xl shadow-md text-center">
-                            <p class="text-xs font-black text-gray-500 uppercase tracking-widest mb-2">Active
-                                Carry-Overs</p>
-                            <h3 class="text-5xl font-black text-gray-900" id="metric-carryover">0</h3>
-                            <p class="text-[10px] text-orange-500 font-bold uppercase mt-2">Awaiting Parts/Extended</p>
-                        </div>
-                        <div class="bg-white border-b-4 border-red-600 p-8 rounded-2xl shadow-md text-center">
-                            <p class="text-xs font-black text-gray-500 uppercase tracking-widest mb-2">In Bays (Working)
-                            </p>
-                            <h3 class="text-5xl font-black text-gray-900" id="metric-inbay">0</h3>
-                            <p class="text-[10px] text-red-600 font-bold uppercase mt-2">Currently on Lift</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TAB 2: ANALYTICS & REPORTS CENTER -->
-                <div id="db-tab-analytics" class="hidden space-y-8">
+                <!-- SHARED ANALYTICS & PERIODIC SELECTORS -->
+                <div id="db-analytics-selectors" class="hidden mb-6">
                     <!-- Range Selectors & Filter Row -->
                     <div
                         class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
@@ -814,6 +784,40 @@
                             </span>
                         </div>
                     </div>
+                </div>
+
+                <!-- TAB 1: LIVE OPERATIONS MONITOR -->
+                <div id="db-tab-monitor" class="space-y-8">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        <div class="bg-white border-b-4 border-gray-800 p-8 rounded-2xl shadow-md text-center">
+                            <p class="text-xs font-black text-gray-500 uppercase tracking-widest mb-2">Total Daily
+                                Intake</p>
+                            <h3 class="text-5xl font-black text-gray-900" id="metric-intake">0</h3>
+                            <p class="text-[10px] text-red-600 font-bold uppercase mt-2">Vehicles Registered</p>
+                        </div>
+                        <div class="bg-white border-b-4 border-green-600 p-8 rounded-2xl shadow-md text-center">
+                            <p class="text-xs font-black text-gray-500 uppercase tracking-widest mb-2">Released Today
+                            </p>
+                            <h3 class="text-5xl font-black text-gray-900" id="metric-completed">0</h3>
+                            <p class="text-[10px] text-green-600 font-bold uppercase mt-2">Services Completed</p>
+                        </div>
+                        <div class="bg-white border-b-4 border-orange-500 p-8 rounded-2xl shadow-md text-center">
+                            <p class="text-xs font-black text-gray-500 uppercase tracking-widest mb-2">Active
+                                Carry-Overs</p>
+                            <h3 class="text-5xl font-black text-gray-900" id="metric-carryover">0</h3>
+                            <p class="text-[10px] text-orange-500 font-bold uppercase mt-2">Awaiting Parts/Extended</p>
+                        </div>
+                        <div class="bg-white border-b-4 border-red-600 p-8 rounded-2xl shadow-md text-center">
+                            <p class="text-xs font-black text-gray-500 uppercase tracking-widest mb-2">In Bays (Working)
+                            </p>
+                            <h3 class="text-5xl font-black text-gray-900" id="metric-inbay">0</h3>
+                            <p class="text-[10px] text-red-600 font-bold uppercase mt-2">Currently on Lift</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: ANALYTICS & REPORTS CENTER -->
+                <div id="db-tab-analytics" class="hidden space-y-8">
 
                     <!-- Period Summary Cards Grid -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -4409,14 +4413,22 @@
             const secMonitor = document.getElementById('db-tab-monitor');
             const secAnalytics = document.getElementById('db-tab-analytics');
             const secPeriodic = document.getElementById('db-tab-periodic');
+            const secSelectors = document.getElementById('db-analytics-selectors');
 
             const activeClass = "pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-red-650 text-red-650 transition flex items-center gap-1.5";
             const inactiveClass = "pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition flex items-center gap-1.5";
 
-            // Hide all
+            // Hide all tabs
             secMonitor.classList.add('hidden');
             secAnalytics.classList.add('hidden');
             if (secPeriodic) secPeriodic.classList.add('hidden');
+            
+            // Show/Hide selectors container
+            if (tab === 'analytics' || tab === 'periodic') {
+                if (secSelectors) secSelectors.classList.remove('hidden');
+            } else {
+                if (secSelectors) secSelectors.classList.add('hidden');
+            }
 
             btnMonitor.className = inactiveClass;
             btnAnalytics.className = inactiveClass;
