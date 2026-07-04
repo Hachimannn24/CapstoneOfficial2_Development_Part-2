@@ -4331,7 +4331,7 @@
             document.getElementById('metric-intake').innerText = todayJobs.length;
             document.getElementById('metric-completed').innerText = allJobs.filter(j => (j.status === 'Released' || j.status === 'Completed') && j.dateReceived === today).length;
             document.getElementById('metric-carryover').innerText = allJobs.filter(j => j.status === 'Carry Over').length;
-            document.getElementById('metric-inbay').innerText = allJobs.filter(j => j.status && j.status.startsWith('Lift')).length;
+            document.getElementById('metric-inbay').innerText = allJobs.filter(j => j.location && j.location.startsWith('Lift')).length;
 
             // If we are currently looking at the analytics center tab (Tab 2), reload its data too
             if (currentDashboardTab === 'analytics') {
@@ -4969,7 +4969,7 @@
             const intakeCount = todayJobs.length;
             const releasedCount = allJobs.filter(j => (j.status === 'Released' || j.status === 'Completed') && j.dateReceived === todayStr).length;
             const carryoverCount = allJobs.filter(j => j.status === 'Carry Over').length;
-            const inbayCount = allJobs.filter(j => j.status && j.status.startsWith('Lift')).length;
+            const inbayCount = allJobs.filter(j => j.location && j.location.startsWith('Lift')).length;
 
             doc.setFontSize(11);
             doc.setTextColor(17, 24, 39);
@@ -5079,7 +5079,7 @@
             const intakeCount = todayJobs.length;
             const releasedCount = allJobs.filter(j => (j.status === 'Released' || j.status === 'Completed') && j.dateReceived === todayStr).length;
             const carryoverCount = allJobs.filter(j => j.status === 'Carry Over').length;
-            const inbayCount = allJobs.filter(j => j.status && j.status.startsWith('Lift')).length;
+            const inbayCount = allJobs.filter(j => j.location && j.location.startsWith('Lift')).length;
 
             const activeJobs = allJobs.filter(j => j.status !== 'Pending' && j.status !== 'Carry Over' && j.status !== 'Completed');
             const carryOverJobs = allJobs.filter(j => j.status === 'Carry Over');
@@ -5696,7 +5696,7 @@
             if (tvGRS) {
                 let liftsHTML = '';
                 for (let i = 1; i <= 4; i++) {
-                    const job = allJobs.find(j => j.status === `Lift ${i}`);
+                    const job = allJobs.find(j => j.location === `Lift ${i}`);
                     if (job) {
                         const theme = getServiceTheme(job.category);
                         liftsHTML += `
