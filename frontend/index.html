@@ -3872,7 +3872,7 @@
                                     <span>${job.saName ? `| SA: ${job.saName}` : '| Unassigned'}</span>
                                 </div>
                                 ${isEditable ? `
-                                <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-[10px] font-bold uppercase !w-36 border border-gray-200 bg-white cursor-pointer block mt-1">
+                                <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-[10px] font-bold uppercase !w-44 border border-gray-200 bg-white cursor-pointer block mt-1">
                                     <option value="Flexible (Ordinary)" ${job.laneType === 'Flexible (Ordinary)' ? 'selected' : ''}>Flexible (Ordinary)</option>
                                     <option value="Express Lane" ${job.laneType === 'Express Lane' ? 'selected' : ''}>Express Lane</option>
                                     <option value="Special Lane" ${job.laneType === 'Special Lane' ? 'selected' : ''}>Special Lane</option>
@@ -3951,7 +3951,7 @@
                             <!-- Location -->
                             <td class="px-3 py-4">
                                 ${isEditable ? `
-                                <select onchange="updateJobField('${job.id}', 'location', this.value)" class="table-select font-bold text-xs uppercase !w-36 border border-gray-200 bg-white" style="${job.location !== 'None' ? 'background-color:#fee2e2; color:#b91c1c; border-color:#fca5a5;' : 'color:#6b7280; background-color:#ffffff;'}">
+                                <select onchange="updateJobField('${job.id}', 'location', this.value)" class="table-select font-bold text-xs uppercase !w-40 border border-gray-200 bg-white" style="${job.location !== 'None' ? 'background-color:#fee2e2; color:#b91c1c; border-color:#fca5a5;' : 'color:#6b7280; background-color:#ffffff;'}">
                                     <option value="None" ${job.location === 'None' ? 'selected' : ''}>Waiting Area</option>
                                     ${[1, 2, 3, 4].map(i => {
                                         const liftName = `Lift ${i}`;
