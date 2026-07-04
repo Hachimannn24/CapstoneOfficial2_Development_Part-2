@@ -1333,7 +1333,7 @@
                         </div>
                     </div>
                     <div class="overflow-x-auto max-h-[400px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll">
-                        <table class="w-full table-fixed text-left whitespace-nowrap min-w-[1700px]">
+                        <table class="table-fixed text-left whitespace-nowrap" style="width: 1700px; min-width: 1700px;">
                             <thead>
                                 <tr>
                                     <th>Claim Stub</th>
@@ -4040,7 +4040,7 @@
                             </div>
 
                             <div class="overflow-x-auto max-h-[400px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
-                                <table class="w-full table-fixed text-left whitespace-nowrap min-w-[1700px]">
+                                <table class="table-fixed text-left whitespace-nowrap" style="width: 1700px; min-width: 1700px;">
                                     ${getTableHeaderHtml()}
                                     <tbody>
                                         ${renderJobRows(filteredActiveJobs) || `<tr><td colspan="${showGoal ? 10 : 9}" class="text-center py-8 text-gray-500 font-medium">No active vehicles in the queue.</td></tr>`}
