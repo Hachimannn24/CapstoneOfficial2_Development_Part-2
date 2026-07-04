@@ -4236,7 +4236,6 @@
             const tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
             document.getElementById('carryover-promised-date').value = tomorrow.toISOString().split('T')[0];
-            document.getElementById('carryover-status').value = 'Awaiting Parts';
             
             document.getElementById('carryover-modal').classList.remove('hidden');
         }
