@@ -1255,7 +1255,7 @@
                             </div>
                             <div class="md:col-span-1 hidden">
                                 <select id="intake-lane-type" class="hidden">
-                                    <option value="Flexible (Ordinary)" selected>Flexible (Ordinary)</option>
+                                    <option value="Flexible" selected>Flexible</option>
                                 </select>
                             </div>
                             <div class="md:col-span-1 flex items-center mt-5">
@@ -3378,7 +3378,7 @@
                 }
 
                 const laneTypeSelect = document.getElementById('intake-lane-type');
-                if (laneTypeSelect) laneTypeSelect.value = 'Flexible (Ordinary)';
+                if (laneTypeSelect) laneTypeSelect.value = 'Flexible';
 
                 if (document.getElementById('intake-confirmed')) document.getElementById('intake-confirmed').checked = false;
 
@@ -3719,7 +3719,7 @@
                             <td><div class="font-black italic text-gray-700 text-lg">${job.plate}</div></td>
                             <td class="text-gray-500 text-sm">${job.vehicle}</td>
                             <td>
-                                <span class="text-xs font-bold text-gray-700">${job.laneType || 'Flexible (Ordinary)'}</span>
+                                <span class="text-xs font-bold text-gray-700">${job.laneType || 'Flexible'}</span>
                             </td>
                             <td>
                                 <span class="text-xs font-semibold text-gray-700">${job.apptDate || ''} @ ${formatTime12Hour(job.apptTime)}</span>
@@ -3754,7 +3754,7 @@
                             <td><div class="font-black italic text-gray-700 text-lg">${job.plate}</div></td>
                             <td class="text-gray-500 text-sm">${job.vehicle}</td>
                             <td>
-                                <span class="text-xs font-bold text-gray-700">${job.laneType || 'Flexible (Ordinary)'}</span>
+                                <span class="text-xs font-bold text-gray-700">${job.laneType || 'Flexible'}</span>
                             </td>
                             <td>
                                 <span class="text-xs font-semibold text-gray-700">${job.apptDate || ''} @ ${formatTime12Hour(job.apptTime)}</span>
@@ -3873,12 +3873,12 @@
                                 </div>
                                 ${isEditable ? `
                                 <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-[10px] font-bold uppercase !w-44 border border-gray-200 bg-white cursor-pointer block mt-1">
-                                    <option value="Flexible (Ordinary)" ${job.laneType === 'Flexible (Ordinary)' ? 'selected' : ''}>Flexible (Ordinary)</option>
+                                    <option value="Flexible" ${job.laneType === 'Flexible' ? 'selected' : ''}>Flexible</option>
                                     <option value="Express Lane" ${job.laneType === 'Express Lane' ? 'selected' : ''}>Express Lane</option>
                                     <option value="Special Lane" ${job.laneType === 'Special Lane' ? 'selected' : ''}>Special Lane</option>
                                 </select>
                                 ` : `
-                                <div class="text-[10px] text-red-600 font-bold uppercase mt-1">Lane: ${job.laneType || 'Flexible (Ordinary)'}</div>
+                                <div class="text-[10px] text-red-600 font-bold uppercase mt-1">Lane: ${job.laneType || 'Flexible'}</div>
                                 `}
                             </td>
                             
@@ -5752,7 +5752,7 @@
                 expressList.innerHTML = activeLaneJobs.filter(j => j.laneType === 'Express Lane').map(renderLaneJobCard).join('') || `<div class="text-center py-6 text-gray-400 font-semibold text-xs italic">No Vehicles</div>`;
             }
             if (flexibleList) {
-                flexibleList.innerHTML = activeLaneJobs.filter(j => j.laneType === 'Flexible (Ordinary)' || !j.laneType).map(renderLaneJobCard).join('') || `<div class="text-center py-6 text-gray-400 font-semibold text-xs italic">No Vehicles</div>`;
+                flexibleList.innerHTML = activeLaneJobs.filter(j => j.laneType === 'Flexible' || !j.laneType).map(renderLaneJobCard).join('') || `<div class="text-center py-6 text-gray-400 font-semibold text-xs italic">No Vehicles</div>`;
             }
             if (specialList) {
                 specialList.innerHTML = activeLaneJobs.filter(j => j.laneType === 'Special Lane').map(renderLaneJobCard).join('') || `<div class="text-center py-6 text-gray-400 font-semibold text-xs italic">No Vehicles</div>`;
