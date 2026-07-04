@@ -3872,7 +3872,7 @@
                                     <span>${job.saName ? `| SA: ${job.saName}` : '| Unassigned'}</span>
                                 </div>
                                 ${isEditable ? `
-                                <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-[10px] font-bold uppercase w-36 border border-gray-200 bg-white cursor-pointer block mt-1">
+                                <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-[10px] font-bold uppercase !w-36 border border-gray-200 bg-white cursor-pointer block mt-1">
                                     <option value="Flexible (Ordinary)" ${job.laneType === 'Flexible (Ordinary)' ? 'selected' : ''}>Flexible (Ordinary)</option>
                                     <option value="Express Lane" ${job.laneType === 'Express Lane' ? 'selected' : ''}>Express Lane</option>
                                     <option value="Special Lane" ${job.laneType === 'Special Lane' ? 'selected' : ''}>Special Lane</option>
@@ -3891,11 +3891,11 @@
                             <td class="px-3 py-4">
                                 ${canEditArrival ? `
                                 <div class="flex items-center gap-1 shrink-0">
-                                    <select onchange="updateJobTimeField('${job.id}', 'arrival', this.value, 'hour')" class="table-select text-xs w-14 shrink-0 min-w-[56px] border border-gray-200 bg-white">
+                                    <select onchange="updateJobTimeField('${job.id}', 'arrival', this.value, 'hour')" class="table-select text-xs !w-14 shrink-0 !min-w-[56px] border border-gray-200 bg-white">
                                         ${getHourOptions(convertTimeTo24Hour(job.arrival).split(':')[0])}
                                     </select>
                                     <span class="text-gray-400 font-bold">:</span>
-                                    <select onchange="updateJobTimeField('${job.id}', 'arrival', this.value, 'minute')" class="table-select text-xs w-14 shrink-0 min-w-[56px] border border-gray-200 bg-white">
+                                    <select onchange="updateJobTimeField('${job.id}', 'arrival', this.value, 'minute')" class="table-select text-xs !w-14 shrink-0 !min-w-[56px] border border-gray-200 bg-white">
                                         ${getMinuteOptions(convertTimeTo24Hour(job.arrival).split(':')[1])}
                                     </select>
                                 </div>
@@ -3906,11 +3906,11 @@
                             <td class="px-3 py-4">
                                 ${isEditable ? `
                                 <div class="flex items-center gap-1 shrink-0">
-                                    <select onchange="updateJobTimeField('${job.id}', 'departure', this.value, 'hour')" class="table-select text-xs w-14 shrink-0 min-w-[56px] border border-gray-200 bg-white">
+                                    <select onchange="updateJobTimeField('${job.id}', 'departure', this.value, 'hour')" class="table-select text-xs !w-14 shrink-0 !min-w-[56px] border border-gray-200 bg-white">
                                         ${getHourOptions(convertTimeTo24Hour(job.departure).split(':')[0])}
                                     </select>
                                     <span class="text-gray-400 font-bold">:</span>
-                                    <select onchange="updateJobTimeField('${job.id}', 'departure', this.value, 'minute')" class="table-select text-xs w-14 shrink-0 min-w-[56px] border border-gray-200 bg-white">
+                                    <select onchange="updateJobTimeField('${job.id}', 'departure', this.value, 'minute')" class="table-select text-xs !w-14 shrink-0 !min-w-[56px] border border-gray-200 bg-white">
                                         ${getMinuteOptions(convertTimeTo24Hour(job.departure).split(':')[1])}
                                     </select>
                                 </div>
@@ -3921,7 +3921,7 @@
                             <!-- Evaluation / Diagnosis -->
                             <td class="px-3 py-4">
                                 ${isEditable ? `
-                                <input type="text" value="${job.evaluation || ''}" placeholder="Diagnosis..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-gray-900 border border-gray-200 w-52 bg-white">
+                                <input type="text" value="${job.evaluation || ''}" placeholder="Diagnosis..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-gray-900 border border-gray-200 !w-52 bg-white">
                                 ` : `<span class="text-sm font-medium text-gray-600">${job.evaluation || '-'}</span>`}
                             </td>
 
@@ -3938,7 +3938,7 @@
                             <!-- Status -->
                             <td class="px-3 py-4">
                                 ${isEditable ? `
-                                <select onchange="handleStatusChange('${job.id}', this.value, this)" class="table-select font-bold text-xs uppercase w-40 border border-gray-200 bg-white" style="${job.status === 'Ready to Release' || job.status === 'Ready' ? 'color:#10b981' : job.status === 'Carry Over' ? 'color:#f97316' : 'color:#374151'}">
+                                <select onchange="handleStatusChange('${job.id}', this.value, this)" class="table-select font-bold text-xs uppercase !w-40 border border-gray-200 bg-white" style="${job.status === 'Ready to Release' || job.status === 'Ready' ? 'color:#10b981' : job.status === 'Carry Over' ? 'color:#f97316' : 'color:#374151'}">
                                     <option value="Waiting" ${job.status === 'Waiting' ? 'selected' : ''}>Waiting</option>
                                     <option value="Monitoring" ${job.status === 'Monitoring' ? 'selected' : ''}>Monitoring</option>
                                     <option value="Carry Over" ${job.status === 'Carry Over' ? 'selected' : ''}>Carry Over</option>
@@ -3951,7 +3951,7 @@
                             <!-- Location -->
                             <td class="px-3 py-4">
                                 ${isEditable ? `
-                                <select onchange="updateJobField('${job.id}', 'location', this.value)" class="table-select font-bold text-xs uppercase w-36 border border-gray-200 bg-white" style="${job.location !== 'None' ? 'background-color:#fee2e2; color:#b91c1c; border-color:#fca5a5;' : 'color:#6b7280; background-color:#ffffff;'}">
+                                <select onchange="updateJobField('${job.id}', 'location', this.value)" class="table-select font-bold text-xs uppercase !w-36 border border-gray-200 bg-white" style="${job.location !== 'None' ? 'background-color:#fee2e2; color:#b91c1c; border-color:#fca5a5;' : 'color:#6b7280; background-color:#ffffff;'}">
                                     <option value="None" ${job.location === 'None' ? 'selected' : ''}>Waiting Area</option>
                                     ${[1, 2, 3, 4].map(i => {
                                         const liftName = `Lift ${i}`;
