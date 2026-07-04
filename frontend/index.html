@@ -1307,7 +1307,6 @@
                                     <th class="px-3 py-3.5 bg-gray-50">Model</th>
                                     <th class="px-3 py-3.5 bg-gray-50">Lane Type</th>
                                     <th class="px-3 py-3.5 bg-gray-50">Appointment (Date, Time)</th>
-                                    <th class="px-3 py-3.5 bg-gray-50">Parts</th>
                                     <th class="px-3 py-3.5 bg-gray-50">Confirmed</th>
                                     <th class="px-3 py-3.5 text-right bg-gray-50">Action</th>
                                 </tr>
@@ -2392,6 +2391,27 @@
         </div>
     </div>
 
+    <!-- Assign Confirm Modal -->
+    <div id="assign-confirm-modal" class="fixed inset-0 z-[700] hidden flex items-center justify-center bg-black/60 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl p-6 max-w-sm w-full border border-gray-200 shadow-2xl space-y-4">
+            <div class="flex items-center gap-3 pb-3">
+                <div class="p-2.5 bg-blue-50 text-blue-600 rounded-xl"><i data-lucide="user-check" class="w-6 h-6"></i></div>
+                <div>
+                    <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Take Job</h3>
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Assign to yourself</p>
+                </div>
+            </div>
+            <p class="text-xs text-gray-600 font-medium leading-relaxed">
+                Are you sure you want to assign this vehicle to yourself?
+            </p>
+            <input type="hidden" id="assign-job-id">
+            <div class="flex gap-3 justify-end pt-2">
+                <button onclick="document.getElementById('assign-confirm-modal').classList.add('hidden')" class="px-4 py-2 rounded-xl text-xs font-bold text-gray-500 hover:bg-gray-150 transition uppercase tracking-wider">Cancel</button>
+                <button onclick="confirmAssignJob()" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-black rounded-xl text-xs uppercase tracking-wider transition shadow-md shadow-blue-500/10">Confirm</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Carry-Over Details Modal -->
     <div id="carryover-modal" class="fixed inset-0 z-[700] hidden flex items-center justify-center bg-black/60 backdrop-blur-sm">
         <div class="bg-white rounded-3xl p-6 max-w-md w-full border border-gray-200 shadow-2xl space-y-4">
@@ -2399,7 +2419,7 @@
                 <div class="p-2.5 bg-orange-50 text-orange-655 rounded-xl"><i data-lucide="calendar-off" class="w-6 h-6 text-orange-600"></i></div>
                 <div>
                     <h3 class="text-lg font-black uppercase tracking-tight text-gray-900">Carry-Over Details</h3>
-                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Specify reasons and promised date</p>
+                    <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-0.5">Specify promised date and status</p>
                 </div>
             </div>
             <input type="hidden" id="carryover-job-id">
@@ -2408,24 +2428,10 @@
                     <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Promised Completion Date <span class="text-red-500">*</span></label>
                     <input type="date" id="carryover-promised-date" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-bold text-sm focus:border-orange-500 transition">
                 </div>
-                <div>
-                    <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Carry-Over Status <span class="text-red-500">*</span></label>
-                    <select id="carryover-status" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-bold text-xs focus:border-orange-500 transition cursor-pointer">
-                        <option value="Awaiting Parts">Awaiting Parts</option>
-                        <option value="Extended Repair">Extended Repair</option>
-                        <option value="Technician Unavailable">Technician Unavailable</option>
-                        <option value="WCA">WCA (Waiting Customer Approval)</option>
-                        <option value="Others">Others</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="text-[10px] text-gray-655 font-bold uppercase tracking-wider mb-1 block">Reasons <span class="text-red-500">*</span></label>
-                    <textarea id="carryover-remarks" placeholder="Specify reasons..." class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2 focus:border-orange-500 outline-none font-semibold text-xs h-24 resize-none"></textarea>
-                </div>
             </div>
             <div class="flex gap-3 justify-end pt-2">
                 <button onclick="closeCarryoverModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-gray-500 hover:bg-gray-150 transition uppercase tracking-wider">Cancel</button>
-                <button onclick="submitCarryoverDetails()" class="px-5 py-2 bg-orange-550 hover:bg-orange-600 text-white font-black rounded-xl text-xs uppercase tracking-wider transition shadow-md shadow-orange-500/10">Confirm Carry-Over</button>
+                <button onclick="submitCarryoverDetails()" class="px-5 py-2 bg-orange-600 hover:bg-orange-700 text-white font-black rounded-xl text-xs uppercase tracking-wider transition shadow-md shadow-orange-500/10">Confirm Carry-Over</button>
             </div>
         </div>
     </div>
@@ -3413,7 +3419,8 @@
                 }
 
                 renderStaffTables();
-                renderTV();
+                if (typeof renderTV === 'function') renderTV();
+                if (typeof renderReports === 'function') renderReports();
             } catch (err) {
                 showSystemToast(err.message || 'Error updating job property.', 'error');
             }
@@ -3421,6 +3428,39 @@
 
         function updateCheckbox(jobId, field, checked) {
             updateJobField(jobId, field, checked);
+        }
+
+        function handleTableCategoryChange(jobId, selectElement) {
+            const val = selectElement.value;
+            const inputEl = document.getElementById(`category-input-${jobId}`);
+            if (inputEl) {
+                if (val === 'Others') {
+                    inputEl.classList.remove('hidden');
+                    inputEl.value = '';
+                    inputEl.focus();
+                } else {
+                    inputEl.classList.add('hidden');
+                    updateJobField(jobId, 'category', val);
+                }
+            }
+        }
+
+        function assignMeToJob(jobId) {
+            document.getElementById('assign-job-id').value = jobId;
+            document.getElementById('assign-confirm-modal').classList.remove('hidden');
+        }
+
+        async function confirmAssignJob() {
+            const jobId = document.getElementById('assign-job-id').value;
+            if (!jobId) return;
+            document.getElementById('assign-confirm-modal').classList.add('hidden');
+            
+            let saNameValue = currentUserName;
+            if (!saNameValue.includes('(Advisor)')) {
+                saNameValue = `${currentUserName} (Advisor)`;
+            }
+            
+            await updateJobField(jobId, 'saName', saNameValue);
         }
 
         async function setJobStatus(jobId, newStatus) {
@@ -3708,66 +3748,41 @@
             if ((isAsst || isOwner || isAdmin) && document.getElementById('table-pending-express')) {
                 const pendingOnline = allJobs.filter(j => j.source === 'Online' && j.status === 'Pending');
                 document.getElementById('table-pending-express').innerHTML = pendingOnline.map(job => {
-                    if (isAsst) {
-                        return `
-                        <tr>
-                            <td>
-                                <div class="font-bold text-gray-900">${job.name}</div>
-                                <div class="text-xs text-gray-500 font-mono mt-0.5">${formatPhoneNumber(job.contact)}</div>
-                            </td>
-                            <td><div class="font-black italic text-gray-700 text-lg">${job.plate}</div></td>
-                            <td class="text-gray-500 text-sm">${job.vehicle}</td>
-                            <td>
-                                <span class="text-xs font-bold text-gray-700">${job.laneType || 'Flexible'}</span>
-                            </td>
-                            <td>
-                                <span class="text-xs font-semibold text-gray-700">${job.apptDate || ''} @ ${formatTime12Hour(job.apptTime)}</span>
-                            </td>
-                            <td>
-                                <span class="text-xs font-bold uppercase ${job.partsAvailable === 'Yes' ? 'text-green-600' : job.partsAvailable === 'No' ? 'text-red-600' : 'text-gray-500'}">${job.partsAvailable}</span>
-                            </td>
-                            <td class="text-center">
-                                <span class="text-xs font-bold ${job.confirmed ? 'text-green-600' : 'text-gray-400'}">${job.confirmed ? 'Yes' : 'No'}</span>
-                            </td>
-                            <td class="text-right flex items-center justify-end gap-2">
-                                <button onclick="confirmActiveOnlineJob('${job.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-extrabold uppercase transition shadow-md shadow-emerald-500/10 flex items-center gap-1">
-                                    <i data-lucide="check" class="w-3.5 h-3.5"></i> Confirm Active
-                                </button>
-                                <button onclick="removeJob('${job.id}')" class="border border-red-200 hover:border-red-500 text-red-500 hover:bg-red-50 p-2 rounded-xl transition flex items-center justify-center" title="Delete Booking">
-                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        `;
-                    } else {
-                        // Read-Only for Owner/Admin
-                        return `
-                        <tr>
-                            <td>
-                                <div class="font-bold text-gray-900">${job.name}</div>
-                                <div class="text-xs text-gray-500 font-mono mt-0.5">${formatPhoneNumber(job.contact)}</div>
-                            </td>
-                            <td><div class="font-black italic text-gray-700 text-lg">${job.plate}</div></td>
-                            <td class="text-gray-500 text-sm">${job.vehicle}</td>
-                            <td>
-                                <span class="text-xs font-bold text-gray-700">${job.laneType || 'Flexible'}</span>
-                            </td>
-                            <td>
-                                <span class="text-xs font-semibold text-gray-700">${job.apptDate || ''} @ ${formatTime12Hour(job.apptTime)}</span>
-                            </td>
-                            <td>
-                                <span class="text-xs font-bold uppercase ${job.partsAvailable === 'Yes' ? 'text-green-600' : job.partsAvailable === 'No' ? 'text-red-600' : 'text-gray-500'}">${job.partsAvailable}</span>
-                            </td>
-                            <td class="text-center">
-                                <span class="text-xs font-bold ${job.confirmed ? 'text-green-600' : 'text-gray-400'}">${job.confirmed ? 'Yes' : 'No'}</span>
-                            </td>
-                            <td class="text-right text-gray-400 text-xs italic">
-                                Read-Only
-                            </td>
-                        </tr>
-                        `;
-                    }
-                }).join('') || `<tr><td colspan="8" class="text-center py-8 text-gray-500 font-medium">No pending online bookings.</td></tr>`;
+                    return `
+                    <tr>
+                        <td>
+                            <div class="font-bold text-gray-900">${job.name}</div>
+                            <div class="text-xs text-gray-500 font-mono mt-0.5">${formatPhoneNumber(job.contact)}</div>
+                        </td>
+                        <td><div class="font-black italic text-gray-700 text-lg">${job.plate}</div></td>
+                        <td class="text-gray-500 text-sm">${job.vehicle}</td>
+                        <td>
+                            <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-xs font-bold uppercase border border-gray-200 bg-white cursor-pointer py-0.5 w-32">
+                                <option value="Flexible" ${job.laneType === 'Flexible' ? 'selected' : ''}>Flexible</option>
+                                <option value="Express Lane" ${job.laneType === 'Express Lane' ? 'selected' : ''}>Express Lane</option>
+                                <option value="Special Lane" ${job.laneType === 'Special Lane' ? 'selected' : ''}>Special Lane</option>
+                            </select>
+                        </td>
+                        <td>
+                            <div class="flex flex-col gap-1.5">
+                                <input type="date" value="${job.apptDate || ''}" onchange="updateJobField('${job.id}', 'apptDate', this.value)" class="table-select text-xs border border-gray-200 bg-white px-1 py-0.5 w-28">
+                                <input type="time" value="${job.apptTime || ''}" onchange="updateJobField('${job.id}', 'apptTime', this.value)" class="table-select text-xs border border-gray-200 bg-white px-1 py-0.5 w-24">
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <input type="checkbox" ${job.confirmed ? 'checked' : ''} onchange="updateCheckbox('${job.id}', 'confirmed', this.checked)" class="w-4 h-4 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500 cursor-pointer">
+                        </td>
+                        <td class="text-right flex items-center justify-end gap-2">
+                            <button onclick="confirmActiveOnlineJob('${job.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-extrabold uppercase transition shadow-md shadow-emerald-500/10 flex items-center gap-1">
+                                <i data-lucide="check" class="w-3.5 h-3.5"></i> Confirm Active
+                            </button>
+                            <button onclick="removeJob('${job.id}')" class="border border-red-200 hover:border-red-500 text-red-500 hover:bg-red-50 p-2 rounded-xl transition flex items-center justify-center" title="Delete Booking">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    `;
+                }).join('') || `<tr><td colspan="7" class="text-center py-8 text-gray-500 font-medium">No pending online bookings.</td></tr>`;
             }
 
             // DAILY INTAKES
@@ -3853,16 +3868,22 @@
                             <!-- Model & Category -->
                             <td class="px-3 py-4">
                                 <div class="font-bold text-gray-900">${job.vehicle}</div>
-                                <div class="text-[10px] text-gray-500 font-bold uppercase mb-1 flex items-center gap-1">
+                                <div class="text-[10px] text-gray-500 font-bold uppercase mb-1 flex items-center gap-2 flex-wrap">
                                     ${isEditable ? `
-                                    <select onchange="updateJobField('${job.id}', 'category', this.value)" class="table-select text-[10px] font-bold uppercase border border-gray-200 bg-white cursor-pointer py-0.5">
-                                        <option value="PMS" ${job.category === 'PMS' ? 'selected' : ''}>PMS</option>
-                                        <option value="GRS" ${job.category === 'GRS' ? 'selected' : ''}>GRS</option>
-                                        <option value="PMS AND GRS" ${job.category === 'PMS AND GRS' ? 'selected' : ''}>PMS AND GRS</option>
-                                        <option value="Others" ${['PMS', 'GRS', 'PMS AND GRS'].includes(job.category) ? '' : 'selected'}>Others</option>
-                                    </select>
+                                    <div class="flex flex-col gap-1">
+                                        <select onchange="handleTableCategoryChange('${job.id}', this)" class="table-select text-[10px] font-bold uppercase border border-gray-200 bg-white cursor-pointer py-0.5">
+                                            <option value="PMS" ${job.category === 'PMS' ? 'selected' : ''}>PMS</option>
+                                            <option value="GRS" ${job.category === 'GRS' ? 'selected' : ''}>GRS</option>
+                                            <option value="PMS AND GRS" ${job.category === 'PMS AND GRS' ? 'selected' : ''}>PMS AND GRS</option>
+                                            <option value="Others" ${!['PMS', 'GRS', 'PMS AND GRS'].includes(job.category) ? 'selected' : ''}>Others</option>
+                                        </select>
+                                        <input type="text" id="category-input-${job.id}" value="${!['PMS', 'GRS', 'PMS AND GRS'].includes(job.category) ? job.category : ''}" 
+                                               placeholder="Specify category..." 
+                                               onchange="updateJobField('${job.id}', 'category', this.value)" 
+                                               class="table-select text-[10px] font-bold border border-gray-200 bg-white px-1 py-0.5 w-32 ${['PMS', 'GRS', 'PMS AND GRS'].includes(job.category) ? 'hidden' : ''}">
+                                    </div>
                                     ` : `<span>${job.category}</span>`}
-                                    <span>${job.saName ? `| SA: ${job.saName}` : '| Unassigned'}</span>
+                                    <span>${job.saName ? `| SA: ${job.saName}` : (isAsst ? '' : `| <button onclick="assignMeToJob('${job.id}')" class="text-blue-600 hover:text-blue-800 underline font-black bg-transparent border-none p-0 cursor-pointer">Assign to Me</button>`)}</span>
                                 </div>
                                 ${isEditable ? `
                                 <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-[10px] font-bold uppercase !w-44 border border-gray-200 bg-white cursor-pointer block mt-1">
@@ -3914,8 +3935,8 @@
                             <!-- Evaluation / Diagnosis -->
                             <td class="px-3 py-4">
                                 ${isEditable ? `
-                                <input type="text" value="${job.evaluation || ''}" placeholder="Diagnosis..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-gray-900 border border-gray-200 !w-52 bg-white">
-                                ` : `<span class="text-sm font-medium text-gray-600">${job.evaluation || '-'}</span>`}
+                                <input type="text" id="evaluation-${job.id}" value="${job.evaluation || ''}" placeholder="Diagnosis..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-gray-900 border border-gray-200 !w-52 bg-white">
+                                ` : `<span class="text-sm font-medium text-gray-600" id="evaluation-${job.id}">${job.evaluation || '-'}</span>`}
                             </td>
 
 
@@ -4095,15 +4116,7 @@
                             ${isEditable ? `<input type="text" value="${job.evaluation || ''}" onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-gray-900 font-medium w-48 border border-gray-200 bg-white">` : `<span class="text-gray-700 text-sm">${job.evaluation || '-'}</span>`}
                         </td>
                         <td class="px-3 py-4">
-                            ${isEditable ? `
-                            <select onchange="updateJobField('${job.id}', 'carryOverStatus', this.value)" class="table-select font-bold text-xs uppercase w-36 border border-gray-200 bg-white cursor-pointer">
-                                <option value="Awaiting Parts" ${job.carryOverStatus === 'Awaiting Parts' ? 'selected' : ''}>Awaiting Parts</option>
-                                <option value="Extended Repair" ${job.carryOverStatus === 'Extended Repair' ? 'selected' : ''}>Extended Repair</option>
-                                <option value="Technician Unavailable" ${job.carryOverStatus === 'Technician Unavailable' ? 'selected' : ''}>Technician Unavailable</option>
-                                <option value="WCA" ${job.carryOverStatus === 'WCA' ? 'selected' : ''}>WCA (Waiting Customer Approval)</option>
-                                <option value="Others" ${job.carryOverStatus === 'Others' ? 'selected' : ''}>Others</option>
-                            </select>
-                            ` : `<span class="text-xs font-bold uppercase text-gray-700">${job.carryOverStatus || 'Awaiting Parts'}</span>`}
+                            <span class="text-xs font-bold uppercase text-gray-700">Carry Over</span>
                         </td>
                         <td class="px-3 py-4 text-right">
                             ${actions}
@@ -4224,7 +4237,6 @@
             tomorrow.setDate(tomorrow.getDate() + 1);
             document.getElementById('carryover-promised-date').value = tomorrow.toISOString().split('T')[0];
             document.getElementById('carryover-status').value = 'Awaiting Parts';
-            document.getElementById('carryover-remarks').value = '';
             
             document.getElementById('carryover-modal').classList.remove('hidden');
         }
@@ -4244,22 +4256,21 @@
         async function submitCarryoverDetails() {
             const jobId = document.getElementById('carryover-job-id').value;
             const promisedDate = document.getElementById('carryover-promised-date').value;
-            const carryOverStatus = document.getElementById('carryover-status').value;
-            const remarks = document.getElementById('carryover-remarks').value.trim();
-            
-            if (!promisedDate || !remarks) {
-                return alert('Promised date and reasons are required.');
+            if (!promisedDate) {
+                return alert('Promised date is required.');
             }
             
             try {
-                await apiRequest(`/api/jobs/${jobId}/field`, {
-                    method: 'PATCH',
-                    body: { field: 'remarks', value: remarks }
-                });
-                await apiRequest(`/api/jobs/${jobId}/field`, {
-                    method: 'PATCH',
-                    body: { field: 'carryOverStatus', value: carryOverStatus }
-                });
+                // Get the evaluation value from the Daily Intakes table row to save it
+                const evalEl = document.getElementById(`evaluation-${jobId}`);
+                if (evalEl) {
+                    const evaluationValue = evalEl.value !== undefined ? evalEl.value.trim() : evalEl.textContent.trim();
+                    await apiRequest(`/api/jobs/${jobId}/field`, {
+                        method: 'PATCH',
+                        body: { field: 'evaluation', value: evaluationValue }
+                    });
+                }
+
                 await apiRequest(`/api/jobs/${jobId}/field`, {
                     method: 'PATCH',
                     body: { field: 'promisedDate', value: promisedDate }
