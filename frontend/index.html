@@ -4028,7 +4028,7 @@
                                         }">
                                     <option value="Waiting" style="background-color: white; color: #374151;" ${job.status === 'Waiting' ? 'selected' : ''}>Waiting</option>
                                     <option value="Monitoring" style="background-color: white; color: #374151;" ${job.status === 'Monitoring' ? 'selected' : ''}>Monitoring</option>
-                                    <option value="Carry Over" style="background-color: white; color: #374151;" ${job.status === 'Carry Over' ? 'selected' : ''}>Carry Over</option>
+                                    <option value="Carry Over" style="background-color: white; color: #374151;" ${job.status === 'Carry Over' ? 'selected' : ''}>${(job.promisedDate || job.carryOverStatus) ? 'Return Carry Over' : 'Carry Over'}</option>
                                     <option value="Ready to Release" style="background-color: white; color: #374151;" ${job.status === 'Ready to Release' || job.status === 'Ready' ? 'selected' : ''}>Ready to Release</option>
                                     <option value="Released" style="background-color: white; color: #374151;" ${job.status === 'Released' ? 'selected' : ''}>Released</option>
                                 </select>
