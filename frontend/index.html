@@ -712,7 +712,6 @@
 
             <!-- ANALYTICS DASHBOARD -->
             <div id="section-dashboard" class="section-content hidden fade-in space-y-8">
-                <!-- Sub-tabs for Dashboard -->
                 <div class="flex border-b border-gray-200 mb-6 gap-6">
                     <button id="btn-db-tab-monitor" onclick="switchDashboardTab('monitor')"
                         class="pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-red-600 text-red-600 transition flex items-center gap-1.5">
@@ -721,6 +720,10 @@
                     <button id="btn-db-tab-analytics" onclick="switchDashboardTab('analytics')"
                         class="pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition flex items-center gap-1.5">
                         <i data-lucide="bar-chart-3" class="w-4 h-4"></i> Analytics & Reports Center
+                    </button>
+                    <button id="btn-db-tab-periodic" onclick="switchDashboardTab('periodic')"
+                        class="pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition flex items-center gap-1.5">
+                        <i data-lucide="table" class="w-4 h-4"></i> Periodic Table
                     </button>
                 </div>
 
@@ -976,7 +979,10 @@
                             </div>
                         </div>
                     </div>
+                </div>
 
+                <!-- TAB 3: PERIODIC TABLE -->
+                <div id="db-tab-periodic" class="hidden space-y-8">
                     <!-- Period Log Records Table -->
                     <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
                         <div class="border-b border-gray-150 px-6 py-4.5 flex items-center justify-between bg-gray-50">
@@ -2857,11 +2863,11 @@
                 document.getElementById('sidebar-user-role').innerText = 'Assistant Staff';
                 document.getElementById('header-actions').classList.add('hidden');
 
-                navHTML += `<button onclick="showSection('intake', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="calendar-plus" class="w-4 h-4"></i> Online Booking</button>`;
+                navHTML += `<button onclick="showSection('intake', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="calendar-plus" class="w-4 h-4"></i> Online Booking Form</button>`;
                 navHTML += `<button onclick="showSection('queue', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="list-todo" class="w-4 h-4"></i> Master Queue</button>`;
                 navHTML += `<button onclick="launchTVMode()" class="px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 text-gray-500 flex items-center gap-2"><i data-lucide="monitor" class="w-4 h-4"></i> TV Monitor</button>`;
 
-                sidebarNavHTML += `<button onclick="showSection('intake', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="calendar-plus" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Online Booking</span></button>`;
+                sidebarNavHTML += `<button onclick="showSection('intake', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="calendar-plus" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Online Booking Form</span></button>`;
                 sidebarNavHTML += `<button onclick="showSection('queue', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="list-todo" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">Master Queue</span></button>`;
                 sidebarNavHTML += `<button onclick="launchTVMode()" class="w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-500"><i data-lucide="monitor" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">TV Monitor</span></button>`;
 
@@ -3104,7 +3110,7 @@
             const titles = {
                 'dashboard': 'Analytics Overview',
                 'staff': 'Staff & Access Management',
-                'intake': currentUserRole === 'assistant' ? 'Online Appointments' : 'Walk-In Registration',
+                'intake': currentUserRole === 'assistant' ? 'Online Booking Form' : 'Walk-In Form',
                 'queue': 'Master Data Records',
                 'tv': 'Live Display Monitor',
                 'profile': 'My Security & Profile Settings',
@@ -4387,33 +4393,53 @@
             document.getElementById('metric-carryover').innerText = allJobs.filter(j => j.status === 'Carry Over').length;
             document.getElementById('metric-inbay').innerText = allJobs.filter(j => j.location && j.location.startsWith('Lift')).length;
 
-            // If we are currently looking at the analytics center tab (Tab 2), reload its data too
+            // If we are currently looking at the analytics center or periodic tab, reload their data too
             if (currentDashboardTab === 'analytics') {
                 loadAnalyticsData();
+            } else if (currentDashboardTab === 'periodic') {
+                applyAnalyticFilters();
             }
         }
 
-        function switchDashboardTab(tab) {
+        async function switchDashboardTab(tab) {
             currentDashboardTab = tab;
             const btnMonitor = document.getElementById('btn-db-tab-monitor');
             const btnAnalytics = document.getElementById('btn-db-tab-analytics');
+            const btnPeriodic = document.getElementById('btn-db-tab-periodic');
             const secMonitor = document.getElementById('db-tab-monitor');
             const secAnalytics = document.getElementById('db-tab-analytics');
+            const secPeriodic = document.getElementById('db-tab-periodic');
+
+            const activeClass = "pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-red-650 text-red-650 transition flex items-center gap-1.5";
+            const inactiveClass = "pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition flex items-center gap-1.5";
+
+            // Hide all
+            secMonitor.classList.add('hidden');
+            secAnalytics.classList.add('hidden');
+            if (secPeriodic) secPeriodic.classList.add('hidden');
+
+            btnMonitor.className = inactiveClass;
+            btnAnalytics.className = inactiveClass;
+            if (btnPeriodic) btnPeriodic.className = inactiveClass;
 
             if (tab === 'monitor') {
                 secMonitor.classList.remove('hidden');
-                secAnalytics.classList.add('hidden');
-                btnMonitor.className = "pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-red-600 text-red-600 transition flex items-center gap-1.5";
-                btnAnalytics.className = "pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition flex items-center gap-1.5";
-            } else {
-                secMonitor.classList.add('hidden');
+                btnMonitor.className = activeClass;
+            } else if (tab === 'analytics') {
                 secAnalytics.classList.remove('hidden');
-                btnAnalytics.className = "pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-red-600 text-red-600 transition flex items-center gap-1.5";
-                btnMonitor.className = "pb-3 text-xs font-black uppercase tracking-wider border-b-2 border-transparent text-gray-500 hover:text-gray-900 transition flex items-center gap-1.5";
-
-                // Initialize default date pickers if not already set
+                btnAnalytics.className = activeClass;
                 initAnalyticsPickers();
                 loadAnalyticsData();
+            } else if (tab === 'periodic') {
+                if (secPeriodic) secPeriodic.classList.remove('hidden');
+                if (btnPeriodic) btnPeriodic.className = activeClass;
+                
+                if (!analyticsJobs) {
+                    initAnalyticsPickers();
+                    await loadAnalyticsData();
+                } else {
+                    applyAnalyticFilters();
+                }
             }
         }
 
