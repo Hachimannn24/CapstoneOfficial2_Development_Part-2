@@ -1333,7 +1333,7 @@
                         </div>
                     </div>
                     <div class="overflow-x-auto max-h-[400px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll">
-                        <table class="w-full text-left whitespace-nowrap min-w-[1300px]">
+                        <table class="w-full text-left whitespace-nowrap min-w-[1700px]">
                             <thead>
                                 <tr>
                                     <th>Claim Stub</th>
@@ -3821,16 +3821,16 @@
                     return `
                         <thead class="sticky top-0 z-10 bg-gray-50">
                             <tr class="bg-gray-50 border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
-                                <th class="px-3 py-3.5 w-28 min-w-[110px] bg-gray-50">Claim Stub</th>
-                                <th class="px-3 py-3.5 w-28 min-w-[110px] bg-gray-50">Plate No.</th>
-                                <th class="px-3 py-3.5 w-56 min-w-[220px] bg-gray-50">Model & Category</th>
-                                <th class="px-3 py-3.5 w-24 min-w-[90px] bg-gray-50">Source</th>
-                                <th class="px-3 py-3.5 w-40 min-w-[160px] bg-gray-50">Arrival</th>
-                                <th class="px-3 py-3.5 w-44 min-w-[180px] bg-gray-50">Departure</th>
-                                <th class="px-3 py-3.5 w-64 min-w-[260px] bg-gray-50">Evaluation / Diagnosis</th>
+                                <th class="px-3 py-3.5 w-32 min-w-[130px] bg-gray-50">Claim Stub</th>
+                                <th class="px-3 py-3.5 w-32 min-w-[130px] bg-gray-50">Plate No.</th>
+                                <th class="px-3 py-3.5 w-72 min-w-[280px] bg-gray-50">Model & Category</th>
+                                <th class="px-3 py-3.5 w-28 min-w-[110px] bg-gray-50">Source</th>
+                                <th class="px-3 py-3.5 w-48 min-w-[190px] bg-gray-50">Arrival</th>
+                                <th class="px-3 py-3.5 w-48 min-w-[190px] bg-gray-50">Departure</th>
+                                <th class="px-3 py-3.5 w-80 min-w-[320px] bg-gray-50">Evaluation / Diagnosis</th>
                                 ${showGoal ? '<th class="px-3 py-3.5 w-32 min-w-[128px] bg-gray-50">SLA Status (2h)</th>' : ''}
-                                <th class="px-3 py-3.5 w-44 min-w-[180px] bg-gray-50">Status</th>
-                                <th class="px-3 py-3.5 w-44 min-w-[180px] bg-gray-50">Location</th>
+                                <th class="px-3 py-3.5 w-48 min-w-[190px] bg-gray-50">Status</th>
+                                <th class="px-3 py-3.5 w-48 min-w-[190px] bg-gray-50">Location</th>
                             </tr>
                         </thead>
                     `;
@@ -4040,7 +4040,7 @@
                             </div>
 
                             <div class="overflow-x-auto max-h-[400px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
-                                <table class="w-full text-left whitespace-nowrap min-w-[1300px]">
+                                <table class="w-full text-left whitespace-nowrap min-w-[1700px]">
                                     ${getTableHeaderHtml()}
                                     <tbody>
                                         ${renderJobRows(filteredActiveJobs) || `<tr><td colspan="${showGoal ? 10 : 9}" class="text-center py-8 text-gray-500 font-medium">No active vehicles in the queue.</td></tr>`}
