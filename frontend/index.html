@@ -4391,11 +4391,29 @@
             // Render live operations cards (Tab 1)
             const today = new Date().toISOString().split('T')[0];
             const todayJobs = allJobs.filter(j => j.dateReceived === today);
+            
+            const releasedCount = allJobs.filter(j => j.status === 'Completed' && j.dateCompleted === today).length;
+            const readyToReleaseCount = allJobs.filter(j => j.status === 'Ready to Release' || j.status === 'Ready').length;
+            const carryoverCount = allJobs.filter(j => j.status === 'Carry Over').length;
+            
+            const inBayCount = allJobs.filter(j => j.location && j.location.startsWith('Lift') && j.status !== 'Completed' && j.status !== 'Released').length;
+            const monitoringCount = allJobs.filter(j => j.status === 'Monitoring').length;
 
             document.getElementById('metric-intake').innerText = todayJobs.length;
-            document.getElementById('metric-completed').innerText = allJobs.filter(j => (j.status === 'Released' || j.status === 'Completed') && j.dateReceived === today).length;
-            document.getElementById('metric-carryover').innerText = allJobs.filter(j => j.status === 'Carry Over').length;
-            document.getElementById('metric-inbay').innerText = allJobs.filter(j => j.location && j.location.startsWith('Lift')).length;
+            document.getElementById('metric-completed').innerText = releasedCount;
+            document.getElementById('metric-carryover').innerText = carryoverCount;
+            document.getElementById('metric-inbay').innerText = inBayCount;
+
+            // Update subtext labels to show supplementary stats
+            const completedSub = document.querySelector('#db-tab-monitor > div > div:nth-child(2) > p.text-\\[10px\\]');
+            if (completedSub) {
+                completedSub.innerHTML = `Services Completed <span class="text-gray-500 font-normal">(${readyToReleaseCount} Ready to Release)</span>`;
+            }
+
+            const inbaySub = document.querySelector('#db-tab-monitor > div > div:nth-child(4) > p.text-\\[10px\\]');
+            if (inbaySub) {
+                inbaySub.innerHTML = `Currently on Lift <span class="text-gray-500 font-normal">(${monitoringCount} Monitoring)</span>`;
+            }
 
             // If we are currently looking at the analytics center or periodic tab, reload their data too
             if (currentDashboardTab === 'analytics') {
