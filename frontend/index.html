@@ -3874,6 +3874,8 @@
                                 <th class="px-3 py-3.5 bg-gray-50">Arrival</th>
                                 <th class="px-3 py-3.5 bg-gray-50">Departure</th>
                                 <th class="px-3 py-3.5 bg-gray-50">Evaluation / Diagnosis</th>
+                                <th class="px-3 py-3.5 bg-gray-50">Promised Date</th>
+                                <th class="px-3 py-3.5 bg-gray-50">C.O. Status</th>
                                 ${showGoal ? '<th class="px-3 py-3.5 bg-gray-50">SLA Status (2h)</th>' : ''}
                                 <th class="px-3 py-3.5 bg-gray-50">Status</th>
                                 <th class="px-3 py-3.5 bg-gray-50">Location</th>
@@ -3901,7 +3903,16 @@
                             <td class="px-3 py-4"><span class="font-mono text-gray-500 font-bold text-sm bg-gray-100 px-2 py-1 rounded">${job.claimStub || 'N/A'}</span></td>
                             
                             <!-- Plate -->
-                            <td class="px-3 py-4"><span class="font-black italic text-gray-900 text-lg">${job.plate}</span></td>
+                            <td class="px-3 py-4">
+                                <div class="flex flex-col gap-1">
+                                    <span class="font-black italic text-gray-900 text-lg">${job.plate}</span>
+                                    ${(job.promisedDate || job.carryOverStatus) ? `
+                                    <span class="inline-flex items-center justify-center w-fit bg-orange-100 text-orange-800 text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded border border-orange-200">
+                                        Carry-Over
+                                    </span>
+                                    ` : ''}
+                                </div>
+                            </td>
                             
                             <!-- Model & Category -->
                             <td class="px-3 py-4">
@@ -3975,6 +3986,20 @@
                                 ${isEditable ? `
                                 <input type="text" id="evaluation-${job.id}" value="${job.evaluation || ''}" placeholder="Diagnosis..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-gray-900 border border-gray-200 !w-52 bg-white">
                                 ` : `<span class="text-sm font-medium text-gray-600" id="evaluation-${job.id}">${job.evaluation || '-'}</span>`}
+                            </td>
+
+                            <!-- Promised Date -->
+                            <td class="px-3 py-4">
+                                <span class="text-sm font-bold text-gray-700">${job.promisedDate || '-'}</span>
+                            </td>
+
+                            <!-- C.O. Status -->
+                            <td class="px-3 py-4">
+                                ${job.carryOverStatus ? `
+                                <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase bg-orange-50 text-orange-700 border border-orange-100">
+                                    ${job.carryOverStatus}
+                                </span>
+                                ` : '<span class="text-gray-400">-</span>'}
                             </td>
 
 
