@@ -3821,16 +3821,16 @@
                     return `
                         <thead class="sticky top-0 z-10 bg-gray-50">
                             <tr class="bg-gray-50 border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
-                                <th class="px-3 py-3.5 bg-gray-50">Claim Stub</th>
-                                <th class="px-3 py-3.5 bg-gray-50">Plate No.</th>
-                                <th class="px-3 py-3.5 bg-gray-50">Model & Category</th>
-                                <th class="px-3 py-3.5 bg-gray-50">Source</th>
-                                <th class="px-3 py-3.5 bg-gray-50">Arrival</th>
-                                <th class="px-3 py-3.5 bg-gray-50">Departure</th>
-                                <th class="px-3 py-3.5 bg-gray-50">Evaluation / Diagnosis</th>
-                                ${showGoal ? '<th class="px-3 py-3.5 bg-gray-50">SLA Status (2h)</th>' : ''}
-                                <th class="px-3 py-3.5 bg-gray-50">Status</th>
-                                <th class="px-3 py-3.5 bg-gray-50">Location</th>
+                                <th class="px-3 py-3.5 w-28 min-w-[110px] bg-gray-50">Claim Stub</th>
+                                <th class="px-3 py-3.5 w-28 min-w-[110px] bg-gray-50">Plate No.</th>
+                                <th class="px-3 py-3.5 w-56 min-w-[220px] bg-gray-50">Model & Category</th>
+                                <th class="px-3 py-3.5 w-24 min-w-[90px] bg-gray-50">Source</th>
+                                <th class="px-3 py-3.5 w-40 min-w-[160px] bg-gray-50">Arrival</th>
+                                <th class="px-3 py-3.5 w-44 min-w-[180px] bg-gray-50">Departure</th>
+                                <th class="px-3 py-3.5 w-64 min-w-[260px] bg-gray-50">Evaluation / Diagnosis</th>
+                                ${showGoal ? '<th class="px-3 py-3.5 w-32 min-w-[128px] bg-gray-50">SLA Status (2h)</th>' : ''}
+                                <th class="px-3 py-3.5 w-44 min-w-[180px] bg-gray-50">Status</th>
+                                <th class="px-3 py-3.5 w-44 min-w-[180px] bg-gray-50">Location</th>
                             </tr>
                         </thead>
                     `;
@@ -3921,7 +3921,7 @@
                             <!-- Evaluation / Diagnosis -->
                             <td class="px-3 py-4">
                                 ${isEditable ? `
-                                <input type="text" value="${job.evaluation || ''}" placeholder="Diagnosis..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-gray-900 border border-gray-200 w-36 bg-white">
+                                <input type="text" value="${job.evaluation || ''}" placeholder="Diagnosis..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-gray-900 border border-gray-200 w-52 bg-white">
                                 ` : `<span class="text-sm font-medium text-gray-600">${job.evaluation || '-'}</span>`}
                             </td>
 
