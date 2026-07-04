@@ -3952,12 +3952,22 @@
                             <!-- Status -->
                             <td class="px-3 py-4">
                                 ${isEditable ? `
-                                <select onchange="handleStatusChange('${job.id}', this.value, this)" class="table-select font-bold text-xs uppercase !w-40 border border-gray-200 bg-white" style="${job.status === 'Ready to Release' || job.status === 'Ready' ? 'color:#10b981' : job.status === 'Carry Over' ? 'color:#f97316' : 'color:#374151'}">
-                                    <option value="Waiting" ${job.status === 'Waiting' ? 'selected' : ''}>Waiting</option>
-                                    <option value="Monitoring" ${job.status === 'Monitoring' ? 'selected' : ''}>Monitoring</option>
-                                    <option value="Carry Over" ${job.status === 'Carry Over' ? 'selected' : ''}>Carry Over</option>
-                                    <option value="Ready to Release" ${job.status === 'Ready to Release' || job.status === 'Ready' ? 'selected' : ''}>Ready to Release</option>
-                                    <option value="Released" ${job.status === 'Released' ? 'selected' : ''}>Released</option>
+                                <select onchange="handleStatusChange('${job.id}', this.value, this)" 
+                                        class="table-select font-bold text-xs uppercase !w-40 border rounded-xl py-1.5 px-2 bg-white outline-none transition cursor-pointer" 
+                                        style="${
+                                            job.status === 'Ready to Release' || job.status === 'Ready' 
+                                                ? 'background-color:#ecfdf5; color:#047857; border-color:#a7f3d0;' 
+                                                : job.status === 'Carry Over' 
+                                                    ? 'background-color:#fff7ed; color:#c2410c; border-color:#fed7aa;' 
+                                                    : job.status === 'Monitoring' 
+                                                        ? 'background-color:#eff6ff; color:#1e40af; border-color:#bfdbfe;' 
+                                                        : 'background-color:#f9fafb; color:#4b5563; border-color:#e5e7eb;'
+                                        }">
+                                    <option value="Waiting" style="background-color: white; color: #374151;" ${job.status === 'Waiting' ? 'selected' : ''}>Waiting</option>
+                                    <option value="Monitoring" style="background-color: white; color: #374151;" ${job.status === 'Monitoring' ? 'selected' : ''}>Monitoring</option>
+                                    <option value="Carry Over" style="background-color: white; color: #374151;" ${job.status === 'Carry Over' ? 'selected' : ''}>Carry Over</option>
+                                    <option value="Ready to Release" style="background-color: white; color: #374151;" ${job.status === 'Ready to Release' || job.status === 'Ready' ? 'selected' : ''}>Ready to Release</option>
+                                    <option value="Released" style="background-color: white; color: #374151;" ${job.status === 'Released' ? 'selected' : ''}>Released</option>
                                 </select>
                                 ` : `<span class="px-2 py-1 rounded bg-gray-100 text-xs font-bold uppercase text-gray-700">${job.status === 'Ready' ? 'Ready to Release' : job.status}</span>`}
                             </td>
