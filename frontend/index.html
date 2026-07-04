@@ -4112,9 +4112,9 @@
                     if (isEditable) {
                         actions = `
                             <div class="flex gap-1.5 justify-end">
-                                <button onclick="setJobStatus('${job.id}', 'Waiting')" class="bg-gray-100 text-gray-655 hover:bg-gray-200 px-2 py-1 rounded text-[10px] font-black uppercase transition whitespace-nowrap">Return Active</button>
-                                <button onclick="setJobStatus('${job.id}', 'Ready')" class="bg-green-600 text-white hover:bg-green-700 px-2 py-1 rounded text-[10px] font-black uppercase transition whitespace-nowrap">Ready (TV)</button>
-                                <button onclick="completeRelease('${job.id}')" class="bg-red-650 text-white hover:bg-red-750 px-2 py-1 rounded text-[10px] font-black uppercase transition whitespace-nowrap">Remove</button>
+                                <button onclick="setJobStatus('${job.id}', 'Waiting')" class="bg-slate-100 text-slate-700 hover:bg-slate-200 px-2 py-1.5 rounded-xl text-[10px] font-black uppercase transition whitespace-nowrap">Return Active</button>
+                                <button onclick="setJobStatus('${job.id}', 'Ready')" class="bg-emerald-650 bg-emerald-600 text-white hover:bg-emerald-700 px-2 py-1.5 rounded-xl text-[10px] font-black uppercase transition whitespace-nowrap shadow-md shadow-emerald-500/10">Ready (TV)</button>
+                                <button onclick="completeRelease('${job.id}')" class="bg-rose-600 text-white hover:bg-rose-700 px-2 py-1.5 rounded-xl text-[10px] font-black uppercase transition whitespace-nowrap shadow-md shadow-rose-500/10">Remove</button>
                             </div>
                         `;
                     } else {
