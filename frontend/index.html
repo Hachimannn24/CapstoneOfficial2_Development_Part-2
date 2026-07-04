@@ -3965,19 +3965,19 @@
                             <!-- Location -->
                             <td class="px-3 py-4">
                                 ${isEditable ? `
-                                <select onchange="updateJobField('${job.id}', 'location', this.value)" class="table-select font-bold text-xs uppercase !w-40 border border-gray-200 bg-white" style="${job.location !== 'None' ? 'background-color:#fee2e2; color:#b91c1c; border-color:#fca5a5;' : 'color:#6b7280; background-color:#ffffff;'}">
-                                    <option value="None" ${job.location === 'None' ? 'selected' : ''}>Waiting Area</option>
+                                <select onchange="updateJobField('${job.id}', 'location', this.value)" class="table-select font-bold text-xs uppercase !w-40 border rounded-xl py-1.5 px-2 bg-white outline-none focus:ring-2 focus:ring-blue-500/20 transition cursor-pointer" style="${job.location !== 'None' ? 'background-color:#eff6ff; color:#1e40af; border-color:#bfdbfe;' : 'color:#4b5563; background-color:#ffffff; border-color:#e5e7eb;'}">
+                                    <option value="None" style="background-color: white; color: #374151;" ${job.location === 'None' ? 'selected' : ''}>Waiting Area</option>
                                     ${[1, 2, 3, 4].map(i => {
                                         const liftName = `Lift ${i}`;
                                         const occupiedBy = rowOccupiedLifts[liftName];
                                         const isSelected = job.location === liftName;
                                         if (occupiedBy && !isSelected) {
-                                            return `<option value="${liftName}" style="color:#ef4444;" disabled>${liftName} (Occupied - ${occupiedBy})</option>`;
+                                            return `<option value="${liftName}" style="background-color: white; color: #9ca3af;" disabled>${liftName} (Occupied - ${occupiedBy})</option>`;
                                         }
-                                        return `<option value="${liftName}" ${isSelected ? 'selected style="color:#ef4444;"' : ''}>${liftName}</option>`;
+                                        return `<option value="${liftName}" style="background-color: white; color: #1f2937;" ${isSelected ? 'selected' : ''}>${liftName}</option>`;
                                     }).join('')}
                                 </select>
-                                ` : (job.location && job.location.startsWith('Lift')) ? `<span class="px-2 py-1 rounded bg-red-100 text-xs font-bold uppercase text-red-700">${job.location}</span>` : `<span class="px-2 py-1 rounded bg-gray-100 text-xs font-bold uppercase text-gray-500">Waiting Area</span>`}
+                                ` : (job.location && job.location.startsWith('Lift')) ? `<span class="px-2.5 py-1 rounded-full bg-blue-50 text-xs font-bold uppercase text-blue-700 border border-blue-100">${job.location}</span>` : `<span class="px-2.5 py-1 rounded-full bg-gray-50 text-xs font-bold uppercase text-gray-500 border border-gray-150">Waiting Area</span>`}
                             </td>
                         </tr>
                         `;
