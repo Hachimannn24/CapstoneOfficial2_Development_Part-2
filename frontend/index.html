@@ -2431,7 +2431,11 @@
                 <div>
                     <label class="text-[10px] text-gray-655 font-bold uppercase tracking-wider mb-1 block">Carry-Over Status <span class="text-red-500">*</span></label>
                     <select id="carryover-status" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-bold text-xs focus:border-orange-500 transition cursor-pointer">
-                        <option value="WCA">WCA (Waiting Customer Approval)</option>
+                        <option value="Awaiting Parts">Awaiting Parts</option>
+                        <option value="Extended Repair">Extended Repair</option>
+                        <option value="Technician Unavailable">Technician Unavailable</option>
+                        <option value="WCA">WCA</option>
+                        <option value="Others">Others</option>
                     </select>
                 </div>
             </div>
@@ -4136,7 +4140,11 @@
                             <select onchange="updateJobField('${job.id}', 'carryOverStatus', this.value)" 
                                     class="table-select font-bold text-xs uppercase !w-44 border rounded-xl py-1.5 px-2 bg-white outline-none transition cursor-pointer" 
                                     style="background-color:#fff7ed; color:#c2410c; border-color:#fed7aa;">
-                                <option value="WCA" style="background-color: white; color: #374151;" ${job.carryOverStatus === 'WCA' ? 'selected' : ''}>WCA (Waiting Customer Approval)</option>
+                                <option value="Awaiting Parts" style="background-color: white; color: #374151;" ${job.carryOverStatus === 'Awaiting Parts' ? 'selected' : ''}>Awaiting Parts</option>
+                                <option value="Extended Repair" style="background-color: white; color: #374151;" ${job.carryOverStatus === 'Extended Repair' ? 'selected' : ''}>Extended Repair</option>
+                                <option value="Technician Unavailable" style="background-color: white; color: #374151;" ${job.carryOverStatus === 'Technician Unavailable' ? 'selected' : ''}>Technician Unavailable</option>
+                                <option value="WCA" style="background-color: white; color: #374151;" ${job.carryOverStatus === 'WCA' ? 'selected' : ''}>WCA</option>
+                                <option value="Others" style="background-color: white; color: #374151;" ${job.carryOverStatus === 'Others' ? 'selected' : ''}>Others</option>
                             </select>
                             ` : `<span class="px-2.5 py-1 rounded-full bg-orange-50 text-xs font-bold uppercase text-orange-700 border border-orange-100">${job.carryOverStatus || 'Awaiting Parts'}</span>`}
                         </td>
@@ -4258,7 +4266,7 @@
             const tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
             document.getElementById('carryover-promised-date').value = tomorrow.toISOString().split('T')[0];
-            document.getElementById('carryover-status').value = 'WCA';
+            document.getElementById('carryover-status').value = 'Awaiting Parts';
             
             document.getElementById('carryover-modal').classList.remove('hidden');
         }
