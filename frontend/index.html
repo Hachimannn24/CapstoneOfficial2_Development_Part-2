@@ -4316,10 +4316,17 @@
             carryoverDropdownRef = selectElement;
             document.getElementById('carryover-job-id').value = jobId;
             
-            const tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            document.getElementById('carryover-promised-date').value = tomorrow.toISOString().split('T')[0];
-            document.getElementById('carryover-status').value = 'Awaiting Parts';
+            const job = allJobs.find(j => j.id === jobId);
+            
+            if (job && (job.promisedDate || job.carryOverStatus)) {
+                document.getElementById('carryover-promised-date').value = job.promisedDate || '';
+                document.getElementById('carryover-status').value = job.carryOverStatus || 'Awaiting Parts';
+            } else {
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                document.getElementById('carryover-promised-date').value = tomorrow.toISOString().split('T')[0];
+                document.getElementById('carryover-status').value = 'Awaiting Parts';
+            }
             
             document.getElementById('carryover-modal').classList.remove('hidden');
         }
