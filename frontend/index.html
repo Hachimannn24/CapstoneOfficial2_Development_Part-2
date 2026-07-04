@@ -1309,7 +1309,6 @@
                                     <th class="px-3 py-3.5 bg-gray-50">Appointment (Date, Time)</th>
                                     <th class="px-3 py-3.5 bg-gray-50">Parts</th>
                                     <th class="px-3 py-3.5 bg-gray-50">Confirmed</th>
-                                    <th class="px-3 py-3.5 bg-gray-50">Action to be Done</th>
                                     <th class="px-3 py-3.5 text-right bg-gray-50">Action</th>
                                 </tr>
                             </thead>
@@ -3730,9 +3729,6 @@
                             <td class="text-center">
                                 <span class="text-xs font-bold ${job.confirmed ? 'text-green-600' : 'text-gray-400'}">${job.confirmed ? 'Yes' : 'No'}</span>
                             </td>
-                            <td>
-                                <span class="text-xs text-gray-700 font-medium">${job.remarks || '-'}</span>
-                            </td>
                             <td class="text-right flex items-center justify-end gap-2">
                                 <button onclick="confirmActiveOnlineJob('${job.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-extrabold uppercase transition shadow-md shadow-emerald-500/10 flex items-center gap-1">
                                     <i data-lucide="check" class="w-3.5 h-3.5"></i> Confirm Active
@@ -3765,16 +3761,13 @@
                             <td class="text-center">
                                 <span class="text-xs font-bold ${job.confirmed ? 'text-green-600' : 'text-gray-400'}">${job.confirmed ? 'Yes' : 'No'}</span>
                             </td>
-                            <td>
-                                <span class="text-xs text-gray-700 font-medium">${job.remarks || '-'}</span>
-                            </td>
                             <td class="text-right text-gray-400 text-xs italic">
                                 Read-Only
                             </td>
                         </tr>
                         `;
                     }
-                }).join('') || `<tr><td colspan="9" class="text-center py-8 text-gray-500 font-medium">No pending online bookings.</td></tr>`;
+                }).join('') || `<tr><td colspan="8" class="text-center py-8 text-gray-500 font-medium">No pending online bookings.</td></tr>`;
             }
 
             // DAILY INTAKES
