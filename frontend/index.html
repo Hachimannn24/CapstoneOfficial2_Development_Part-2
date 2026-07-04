@@ -2428,6 +2428,16 @@
                     <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Promised Completion Date <span class="text-red-500">*</span></label>
                     <input type="date" id="carryover-promised-date" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-bold text-sm focus:border-orange-500 transition">
                 </div>
+                <div>
+                    <label class="text-[10px] text-gray-655 font-bold uppercase tracking-wider mb-1 block">Carry-Over Status <span class="text-red-500">*</span></label>
+                    <select id="carryover-status" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 outline-none font-bold text-xs focus:border-orange-500 transition cursor-pointer">
+                        <option value="Awaiting Parts">Awaiting Parts</option>
+                        <option value="Extended Repair">Extended Repair</option>
+                        <option value="Technician Unavailable">Technician Unavailable</option>
+                        <option value="WCA">WCA (Waiting Customer Approval)</option>
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
             </div>
             <div class="flex gap-3 justify-end pt-2">
                 <button onclick="closeCarryoverModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-gray-500 hover:bg-gray-150 transition uppercase tracking-wider">Cancel</button>
@@ -4126,7 +4136,17 @@
                             ${isEditable ? `<input type="text" value="${job.evaluation || ''}" onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-gray-900 font-medium w-48 border border-gray-200 bg-white">` : `<span class="text-gray-700 text-sm">${job.evaluation || '-'}</span>`}
                         </td>
                         <td class="px-3 py-4">
-                            <span class="text-xs font-bold uppercase text-gray-700">Carry Over</span>
+                            ${isEditable ? `
+                            <select onchange="updateJobField('${job.id}', 'carryOverStatus', this.value)" 
+                                    class="table-select font-bold text-xs uppercase !w-44 border rounded-xl py-1.5 px-2 bg-white outline-none transition cursor-pointer" 
+                                    style="background-color:#fff7ed; color:#c2410c; border-color:#fed7aa;">
+                                <option value="Awaiting Parts" style="background-color: white; color: #374151;" ${job.carryOverStatus === 'Awaiting Parts' ? 'selected' : ''}>Awaiting Parts</option>
+                                <option value="Extended Repair" style="background-color: white; color: #374151;" ${job.carryOverStatus === 'Extended Repair' ? 'selected' : ''}>Extended Repair</option>
+                                <option value="Technician Unavailable" style="background-color: white; color: #374151;" ${job.carryOverStatus === 'Technician Unavailable' ? 'selected' : ''}>Technician Unavailable</option>
+                                <option value="WCA" style="background-color: white; color: #374151;" ${job.carryOverStatus === 'WCA' ? 'selected' : ''}>WCA (Waiting Customer Approval)</option>
+                                <option value="Others" style="background-color: white; color: #374151;" ${job.carryOverStatus === 'Others' ? 'selected' : ''}>Others</option>
+                            </select>
+                            ` : `<span class="px-2.5 py-1 rounded-full bg-orange-50 text-xs font-bold uppercase text-orange-700 border border-orange-100">${job.carryOverStatus || 'Awaiting Parts'}</span>`}
                         </td>
                         <td class="px-3 py-4 text-right">
                             ${actions}
@@ -4246,6 +4266,7 @@
             const tomorrow = new Date();
             tomorrow.setDate(tomorrow.getDate() + 1);
             document.getElementById('carryover-promised-date').value = tomorrow.toISOString().split('T')[0];
+            document.getElementById('carryover-status').value = 'Awaiting Parts';
             
             document.getElementById('carryover-modal').classList.remove('hidden');
         }
@@ -4265,6 +4286,7 @@
         async function submitCarryoverDetails() {
             const jobId = document.getElementById('carryover-job-id').value;
             const promisedDate = document.getElementById('carryover-promised-date').value;
+            const carryOverStatus = document.getElementById('carryover-status').value;
             if (!promisedDate) {
                 return alert('Promised date is required.');
             }
@@ -4280,6 +4302,10 @@
                     });
                 }
 
+                await apiRequest(`/api/jobs/${jobId}/field`, {
+                    method: 'PATCH',
+                    body: { field: 'carryOverStatus', value: carryOverStatus }
+                });
                 await apiRequest(`/api/jobs/${jobId}/field`, {
                     method: 'PATCH',
                     body: { field: 'promisedDate', value: promisedDate }
