@@ -107,3 +107,42 @@ If they get an error trying to pull, they can reset their local code to match yo
 git reset --hard origin/Hontech_Main_Active_Development
 ```
 This cleans their environment and lets them download your latest version.
+
+---
+
+## 📝 Git Command Quick Reference (Cheat Sheet)
+
+### 1. The Gather Command
+```bash
+git add .
+```
+**In summary:**  
+You are telling Git: *"Gather all my new files, deletions, and edits from my folder and prepare them to be part of my next save point."*
+
+---
+
+### 2. The Save Point Command
+```bash
+git commit -m "style: updated TV slide 3 colors"
+```
+**In summary:**  
+You are telling Git: *"Create a local Save Point on my computer, label it 'style: updated TV slide 3 colors', and save it in my project's history."*
+
+---
+
+### 3. The Send Command
+```bash
+git push origin Hontech_Main_Active_Development
+```
+**In summary:**  
+You are telling Git: *"Upload all the local Save Points I have created on my computer up to the cloud on GitHub under the branch 'Hontech_Main_Active_Development'."*
+
+---
+
+### 4. The Tester's Download Command
+```bash
+git pull origin Hontech_Main_Active_Development
+```
+**In summary:**  
+You are telling Git: *"Download and merge the latest Save Points from the cloud on GitHub directly into my local computer folder."*
+
