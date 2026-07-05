@@ -328,16 +328,16 @@
                                     placeholder="Enter password">
                             </div>
                         </div>
-
-                        <!-- System Credentials styled beautifully like Dev Test links -->
+                        <!-- System Credentials styled beautifully like Dev Test links -->
                         <div class="bg-gray-50 border border-gray-200 rounded-2xl p-5 shadow-inner">
-                            <div class="flex items-center gap-2 mb-3">
-                                <i data-lucide="shield-check" class="text-red-500 w-4.5 h-4.5"></i>
-                                <span class="text-[10px] font-black uppercase text-gray-700 tracking-wider">Quick Copy
-                                    Dev Credentials</span>
+                            <div onclick="toggleDevCredentials()" class="flex items-center justify-between cursor-pointer select-none">
+                                <div class="flex items-center gap-2">
+                                    <i data-lucide="shield-check" class="text-red-500 w-4.5 h-4.5"></i>
+                                    <span class="text-[10px] font-black uppercase text-gray-700 tracking-wider">Quick Copy Dev Credentials</span>
+                                </div>
+                                <i id="dev-credentials-toggle-icon" data-lucide="chevron-down" class="text-gray-500 w-4.5 h-4.5 transition-transform duration-200"></i>
                             </div>
-                            <div
-                                class="grid grid-cols-1 md:grid-cols-2 gap-3 text-[10px] font-bold text-gray-600 leading-normal">
+                            <div id="dev-credentials-grid" class="hidden grid grid-cols-1 md:grid-cols-2 gap-3 text-[10px] font-bold text-gray-600 leading-normal mt-3">
                                 <div onclick="document.getElementById('login-email').value='owner@hontech.com'; document.getElementById('login-pass').value='owner123';" class="bg-white p-2.5 rounded-xl border border-gray-200 shadow-sm cursor-pointer hover:bg-red-50 hover:border-red-200 transition">
                                     <span class="text-red-600 font-extrabold uppercase text-[9px] block mb-0.5">System Owner</span>
                                     <span class="text-gray-900">owner@hontech.com</span>
@@ -363,9 +363,8 @@
                                     <span class="text-gray-900">tech@hontech.com</span>
                                     <span class="block text-[9px] text-gray-400 font-normal mt-0.5">Pass: tech123</span>
                                 </div>
-
                             </div>
-                        </div>
+                        </div>>
 
                         <!-- Access Portal Action Button -->
                         <button onclick="processLogin()"
@@ -1660,7 +1659,7 @@
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
                     <!-- Profile Details & Email Change -->
-                    <div class="bg-gray-50 border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md space-y-6">
+                    <div class="bg-gray-100 border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md space-y-6">
                         <div class="flex items-center gap-4 border-b border-gray-200 pb-4">
                             <div class="p-3 bg-red-50 text-red-600 rounded-xl"><i data-lucide="user-cog"
                                     class="w-6 h-6"></i></div>
@@ -1702,75 +1701,56 @@
                     </div>
 
                     <!-- Change Password -->
-                    <div class="bg-gray-50 border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md space-y-6">
-                        <div class="flex items-center gap-4 border-b border-gray-200 pb-4">
-                            <div class="p-3 bg-red-50 text-red-600 rounded-xl"><i data-lucide="lock"
-                                    class="w-6 h-6"></i></div>
-                            <div>
-                                <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Update Password
-                                </h3>
-                                <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Reset your
-                                    login password</p>
+                    <div class="bg-gray-100 border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md space-y-6">
+                        <div class="flex items-center justify-between cursor-pointer" onclick="toggleCollapse('pwd-collapse')">
+                            <div class="flex items-center gap-4 border-b border-gray-200 pb-4 w-full">
+                                <div class="p-3 bg-red-50 text-red-600 rounded-xl"><i data-lucide="lock" class="w-6 h-6"></i></div>
+                                <div>
+                                    <h3 class="text-xl font-black uppercase tracking-tight text-gray-900">Update Password</h3>
+                                    <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest mt-1">Reset your login password</p>
+                                </div>
                             </div>
+                            <i data-lucide="chevron-down" id="pwd-collapse-icon"></i>
                         </div>
-
-                        <div class="space-y-4">
+                        <div id="pwd-collapse" class="space-y-4">
                             <div>
-                                <label
-                                    class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Current
-                                    Password</label>
+                                <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Current Password</label>
                                 <div class="relative">
-                                    <i data-lucide="shield-alert"
-                                        class="absolute left-4 top-3 text-gray-400 w-4 h-4"></i>
-                                    <input type="password" id="change-pwd-current"
-                                        class="w-full bg-white border border-gray-200 rounded-xl pl-12 pr-12 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition"
-                                        placeholder="Enter current password">
-                                    <button type="button" onclick="togglePasswordVisibility('change-pwd-current', this)"
-                                        class="absolute right-4 top-3 text-gray-400 hover:text-gray-600">
+                                    <i data-lucide="shield-alert" class="absolute left-4 top-3 text-gray-400 w-4 h-4"></i>
+                                    <input type="password" id="change-pwd-current" class="w-full bg-white border border-gray-200 rounded-xl pl-12 pr-12 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition" placeholder="Enter current password">
+                                    <button type="button" onclick="togglePasswordVisibility('change-pwd-current', this)" class="absolute right-4 top-3 text-gray-400 hover:text-gray-600">
                                         <i data-lucide="eye" class="w-4 h-4"></i>
                                     </button>
                                 </div>
                             </div>
                             <div>
-                                <label
-                                    class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">New
-                                    Password</label>
+                                <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">New Password</label>
                                 <div class="relative">
                                     <i data-lucide="lock" class="absolute left-4 top-3 text-gray-400 w-4 h-4"></i>
-                                    <input type="password" id="change-pwd-new"
-                                        class="w-full bg-white border border-gray-200 rounded-xl pl-12 pr-12 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition"
-                                        placeholder="Enter new password">
-                                    <button type="button" onclick="togglePasswordVisibility('change-pwd-new', this)"
-                                        class="absolute right-4 top-3 text-gray-400 hover:text-gray-600">
+                                    <input type="password" id="change-pwd-new" class="w-full bg-white border border-gray-200 rounded-xl pl-12 pr-12 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition" placeholder="Enter new password">
+                                    <button type="button" onclick="togglePasswordVisibility('change-pwd-new', this)" class="absolute right-4 top-3 text-gray-400 hover:text-gray-600">
                                         <i data-lucide="eye" class="w-4 h-4"></i>
                                     </button>
                                 </div>
                             </div>
                             <div>
-                                <label
-                                    class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Confirm
-                                    New Password</label>
+                                <label class="text-[10px] text-gray-600 font-bold uppercase tracking-wider mb-1 block">Confirm New Password</label>
                                 <div class="relative">
-                                    <i data-lucide="lock-keyhole"
-                                        class="absolute left-4 top-3 text-gray-400 w-4 h-4"></i>
-                                    <input type="password" id="change-pwd-confirm"
-                                        class="w-full bg-white border border-gray-200 rounded-xl pl-12 pr-12 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition"
-                                        placeholder="Confirm new password">
-                                    <button type="button" onclick="togglePasswordVisibility('change-pwd-confirm', this)"
-                                        class="absolute right-4 top-3 text-gray-400 hover:text-gray-600">
+                                    <i data-lucide="lock-keyhole" class="absolute left-4 top-3 text-gray-400 w-4 h-4"></i>
+                                    <input type="password" id="change-pwd-confirm" class="w-full bg-white border border-gray-200 rounded-xl pl-12 pr-12 py-2.5 outline-none font-semibold text-xs text-gray-900 focus:border-red-600 focus:bg-white transition" placeholder="Confirm new password">
+                                    <button type="button" onclick="togglePasswordVisibility('change-pwd-confirm', this)" class="absolute right-4 top-3 text-gray-400 hover:text-gray-600">
                                         <i data-lucide="eye" class="w-4 h-4"></i>
                                     </button>
                                 </div>
                             </div>
-                            <button onclick="submitPasswordChange()"
-                                class="w-full bg-gray-900 hover:bg-black text-white font-black uppercase text-xs tracking-wider py-3.5 rounded-xl transition shadow-md">
+                            <button onclick="submitPasswordChange()" class="w-full bg-gray-900 hover:bg-black text-white font-black uppercase text-xs tracking-wider py-3.5 rounded-xl transition shadow-md">
                                 Save New Password
                             </button>
                         </div>
                     </div>
 
                     <!-- Multi-Factor Authentication (MFA) -->
-                    <div class="bg-gray-50 border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md space-y-6">
+                    <div class="bg-gray-100 border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md space-y-6">
                         <div class="flex items-center gap-4 border-b border-gray-200 pb-4">
                             <div class="p-3 bg-red-50 text-red-600 rounded-xl"><i data-lucide="shield-check"
                                     class="w-6 h-6"></i></div>
@@ -1843,7 +1823,7 @@
                     </div>
 
                     <!-- Linked Accounts & Account Recovery -->
-                    <div class="bg-gray-50 border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md space-y-6">
+                    <div class="bg-gray-100 border border-gray-200 p-6 md:p-8 rounded-2xl shadow-md space-y-6">
                         <div class="flex items-center gap-4 border-b border-gray-200 pb-4">
                             <div class="p-3 bg-red-50 text-red-600 rounded-xl"><i data-lucide="shield-alert"
                                     class="w-6 h-6"></i></div>
@@ -2687,6 +2667,19 @@
 
             lucide.createIcons();
         });
+
+        function toggleDevCredentials() {
+            const grid = document.getElementById('dev-credentials-grid');
+            const icon = document.getElementById('dev-credentials-toggle-icon');
+            if (grid.classList.contains('hidden')) {
+                grid.classList.remove('hidden');
+                icon.setAttribute('data-lucide', 'chevron-up');
+            } else {
+                grid.classList.add('hidden');
+                icon.setAttribute('data-lucide', 'chevron-down');
+            }
+            lucide.createIcons();
+        }
 
         // --- AUTH & ROLE LOGIC ---
         async function processLogin() {
