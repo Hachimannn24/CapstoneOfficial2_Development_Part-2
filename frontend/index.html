@@ -1582,7 +1582,7 @@
                                     </h3>
                                     <p class="text-blue-200 font-bold uppercase tracking-[0.15em] text-[10px] mt-0.5">Waiting List</p>
                                 </div>
-                                <div class="p-4 bg-blue-50/20 flex-1 overflow-y-auto custom-scroll">
+                                <div class="p-4 bg-white flex-1 overflow-y-auto custom-scroll">
                                     <div id="tv-all-upcoming-list" class="flex flex-col gap-2"></div>
                                 </div>
                             </div>
@@ -1596,7 +1596,7 @@
                                     </h3>
                                     <p class="text-green-200 font-bold uppercase tracking-[0.15em] text-[10px] mt-0.5">Please proceed to front desk</p>
                                 </div>
-                                <div class="p-4 bg-green-50/20 flex-1 overflow-y-auto custom-scroll">
+                                <div class="p-4 bg-white flex-1 overflow-y-auto custom-scroll">
                                     <div id="tv-all-released-list" class="flex flex-col gap-2"></div>
                                 </div>
                             </div>
@@ -1611,7 +1611,7 @@
                                 </h3>
                                 <p class="text-orange-100 font-bold uppercase tracking-[0.15em] text-[10px] mt-0.5">Extended Stay / Awaiting Parts</p>
                             </div>
-                            <div class="p-4 bg-orange-50/20 flex-1 overflow-y-auto custom-scroll">
+                            <div class="p-4 bg-white flex-1 overflow-y-auto custom-scroll">
                                 <div id="tv-all-carryover-list" class="grid grid-cols-3 gap-3"></div>
                             </div>
                         </div>
@@ -1641,7 +1641,7 @@
                             <!-- Special Lane Column -->
                             <div class="flex-1 bg-purple-50/30 rounded-2xl border-2 border-purple-200 overflow-hidden flex flex-col shadow-md">
                                 <div class="bg-purple-600 py-3.5 text-center border-b border-purple-700 shrink-0 shadow-sm">
-                                    <h3 class="text-xl font-black uppercase tracking-widest text-white">Specialty Lane</h3>
+                                    <h3 class="text-xl font-black uppercase tracking-widest text-white">Special Lane</h3>
                                 </div>
                                 <div class="p-4 flex-1 overflow-y-auto custom-scroll space-y-3" id="tv-special-lane-list"></div>
                             </div>
@@ -5785,7 +5785,7 @@
                             <span class="${theme.text} font-extrabold text-[10px] uppercase tracking-widest">${job.category}</span>
                         </div>
                     `;
-                }).join('') || `<div class="w-full text-center py-8 text-blue-400/70 font-black uppercase italic text-sm tracking-widest">No Upcoming Vehicles</div>`;
+                }).join('') || `<div class="w-full text-center py-8 text-gray-400/80 font-black uppercase italic text-sm tracking-widest">No Upcoming Vehicles</div>`;
             }
 
             // Render Slide 2 Released List
@@ -5803,7 +5803,7 @@
                             Ready
                         </span>
                     </div>
-                `).join('') || `<div class="w-full text-center py-8 text-green-500/60 font-black uppercase italic text-sm tracking-widest">Waiting for Completed Jobs</div>`;
+                `).join('') || `<div class="w-full text-center py-8 text-gray-400/80 font-black uppercase italic text-sm tracking-widest">Waiting for Completed Jobs</div>`;
             }
 
             // Render Slide 2 Carry Over List
@@ -5819,7 +5819,7 @@
                         </div>
                         <span class="bg-orange-100 text-orange-800 font-extrabold text-[9px] uppercase tracking-wider px-2 py-0.5 rounded">Carry Over</span>
                     </div>
-                `).join('') || `<div class="w-full text-center py-8 text-orange-500/60 font-black uppercase italic text-sm tracking-widest">No Carry-Overs</div>`;
+                `).join('') || `<div class="w-full text-center py-8 text-gray-400/80 font-black uppercase italic text-sm tracking-widest">No Carry-Overs</div>`;
             }
 
             // GRS Active Bays slide (tv-slide-1) rendering (Lifts 1-4)
