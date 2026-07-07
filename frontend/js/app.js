@@ -238,8 +238,10 @@
 
             // Pre-load all sections immediately so navigation is instantaneous
             if (role === 'owner') renderReports();
+            // All roles need their specific tables rendered (the function internally handles role visibility)
+            renderStaffTables();
+            
             if (role === 'owner' || role === 'admin') {
-                renderStaffTables();
                 renderStaffManagement();
             }
             loadUserProfile();
