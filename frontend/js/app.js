@@ -287,6 +287,15 @@
                 document.getElementById('dropdown-user-role').innerText = userRoleLabel;
             }
 
+            // --- RBAC for Security Settings ---
+            const isOwnerOrAdmin = (role === 'owner' || role === 'admin');
+            if (document.getElementById('profile-change-password-container')) {
+                document.getElementById('profile-change-password-container').style.display = isOwnerOrAdmin ? 'block' : 'none';
+            }
+            if (document.getElementById('settings-security-container')) {
+                document.getElementById('settings-security-container').style.display = isOwnerOrAdmin ? 'block' : 'none';
+            }
+
             if (role === 'owner') {
                 document.getElementById('sidebar-user-role').innerText = 'Owner';
                 document.getElementById('header-actions').classList.remove('hidden');
@@ -357,8 +366,8 @@
                 
                 let targetView = localStorage.getItem('hontech-active-section');
                 
-                // Verify if the target section is valid and exists in the DOM
-                if (!targetView || !document.getElementById(`section-${targetView}`)) {
+                // Verify if the target section is valid and exists in the DOM. Do not auto-load TV on startup.
+                if (!targetView || !document.getElementById(`section-${targetView}`) || targetView === 'tv') {
                     targetView = defaultView;
                 }
                 
@@ -388,6 +397,7 @@
             currentUserName = '';
             currentUserEmail = '';
             document.getElementById('login-pass').value = '';
+            localStorage.removeItem('hontech-active-section');
 
             const dropdown = document.getElementById('user-dropdown');
             if (dropdown) dropdown.classList.add('hidden');
@@ -1321,7 +1331,7 @@
                     });
                 }
 
-                const showGoal = isOwnerOrAdmin;
+                const showGoal = isOwnerOrAdmin || isAsst;
 
                 const getTableHeaderHtml = () => {
                     return `
@@ -1343,12 +1353,11 @@
                         </thead>
                     `;
                 };
-
                 const renderJobRows = (jobsList) => {
                     return jobsList.map(job => {
                         const isEditable = isSA;
-                        const canEditArrival = (isSA || isAsst) && job.source === 'Online';
                         
+
                         // Re-evaluate occupied lifts for this specific row excluding current job
                         const rowOccupiedLifts = {};
                         allJobs.forEach(j => {
@@ -1360,10 +1369,10 @@
                                 return `
                         <tr class="${job.status === 'Ready' ? 'bg-green-50/50' : job.status === 'Released' ? 'bg-gray-50/80' : ''}">
                             <!-- Claim Stub -->
-                            <td class="px-2 py-3 align-top"><span class="font-mono text-gray-500 font-bold text-xs bg-gray-100 px-1.5 py-0.5 rounded">${job.claimStub || 'N/A'}</span></td>
+                            <td class="px-2 py-3 align-middle"><span class="inline-flex items-center justify-center w-fit font-bold text-xs uppercase tracking-wide bg-gray-100 text-gray-800 px-2 py-0.5 rounded border border-gray-250">${job.claimStub || 'N/A'}</span></td>
                             
                             <!-- Plate -->
-                            <td class="px-2 py-3 align-top">
+                            <td class="px-2 py-3 align-middle">
                                 <div class="flex flex-col gap-1">
                                     <span class="inline-flex items-center justify-center w-fit font-bold text-xs uppercase tracking-wide bg-gray-100 text-gray-800 px-2 py-0.5 rounded border border-gray-250">${job.plate}</span>
                                     ${(job.promisedDate || job.carryOverStatus) ? `
@@ -1375,58 +1384,61 @@
                             </td>
                             
                             <!-- Model & Category -->
-                            <td class="px-2 py-3 align-top">
-                                <div class="font-bold text-gray-800 text-xs py-0.5">${job.vehicle}</div>
-                                <div class="text-[10px] text-gray-500 font-bold uppercase mt-1 flex flex-col gap-0.5">
-                                    ${isEditable ? `
-                                    <div class="flex flex-col gap-1">
-                                        <select onchange="handleTableCategoryChange('${job.id}', this)" class="table-select text-[10px] font-bold uppercase border border-gray-200 bg-white cursor-pointer py-0.5 !w-32">
-                                            <option value="PMS" ${job.category === 'PMS' ? 'selected' : ''}>PMS</option>
-                                            <option value="GRS" ${job.category === 'GRS' ? 'selected' : ''}>GRS</option>
-                                            <option value="PMS AND GRS" ${job.category === 'PMS AND GRS' ? 'selected' : ''}>PMS AND GRS</option>
-                                            <option value="Others" ${!['PMS', 'GRS', 'PMS AND GRS'].includes(job.category) ? 'selected' : ''}>Others</option>
-                                        </select>
-                                        <input type="text" id="category-input-${job.id}" value="${!['PMS', 'GRS', 'PMS AND GRS'].includes(job.category) ? job.category : ''}" 
-                                               placeholder="Specify category..." 
-                                               onchange="updateJobField('${job.id}', 'category', this.value)" 
-                                               class="table-select text-[10px] font-bold border border-gray-200 bg-white px-1 py-0.5 !w-32 ${['PMS', 'GRS', 'PMS AND GRS'].includes(job.category) ? 'hidden' : ''}">
+                            <td class="px-2 py-3 align-middle">
+                                <div class="font-black text-gray-900 text-sm py-0.5">${job.vehicle}</div>
+                                <div class="text-[10px] text-gray-500 font-bold uppercase mt-1">
+                                    <div class="flex flex-wrap items-center gap-x-1 gap-y-1">
+                                        <div class="flex items-center flex-nowrap gap-1">
+                                            ${isEditable ? `
+                                            <div class="flex items-center gap-1 shrink-0">
+                                                <select onchange="handleTableCategoryChange('${job.id}', this)" class="table-select text-[10px] font-bold uppercase border border-gray-200 bg-white cursor-pointer py-0.5 !w-16">
+                                                    <option value="PMS" ${job.category === 'PMS' ? 'selected' : ''}>PMS</option>
+                                                    <option value="GRS" ${job.category === 'GRS' ? 'selected' : ''}>GRS</option>
+                                                    <option value="PMS AND GRS" ${job.category === 'PMS AND GRS' ? 'selected' : ''}>PMS AND GRS</option>
+                                                    <option value="Others" ${!['PMS', 'GRS', 'PMS AND GRS'].includes(job.category) ? 'selected' : ''}>Others</option>
+                                                </select>
+                                                <input type="text" id="category-input-${job.id}" value="${!['PMS', 'GRS', 'PMS AND GRS'].includes(job.category) ? job.category : ''}" 
+                                                       placeholder="Specify..." 
+                                                       onchange="updateJobField('${job.id}', 'category', this.value)" 
+                                                       class="table-select text-[10px] font-bold border border-gray-200 bg-white px-1 py-0.5 !w-16 shrink-0 ${['PMS', 'GRS', 'PMS AND GRS'].includes(job.category) ? 'hidden' : ''}">
+                                            </div>
+                                            ` : `<span class="text-[10px] font-bold uppercase text-gray-900 shrink-0">${job.category || '-'}</span>`}
+                                            
+                                            <div class="flex items-center shrink-0 whitespace-nowrap">
+                                                ${job.saName ? `<span class="text-gray-400 font-bold mx-0.5">|</span> SA: <span class="text-gray-800 ml-1">${job.saName}</span>` : (isAsst ? `<span class="text-gray-400 font-bold mx-0.5">|</span> <span class="text-gray-500 ml-1">Unassigned</span>` : `<span class="text-gray-400 font-bold mx-0.5">|</span> <button onclick="assignMeToJob('${job.id}')" class="text-blue-600 hover:text-blue-800 underline font-bold bg-transparent border-none p-0 cursor-pointer text-[10px] ml-1">Assign to Me</button>`)}
+                                            </div>
+                                        </div>
                                     </div>
-                                    ` : `<div>Cat: <span class="text-gray-800">${job.category || '-'}</span></div>`}
-                                    <div>SA: <span class="text-gray-800">${job.saName ? job.saName : (isAsst ? '-' : `<button onclick="assignMeToJob('${job.id}')" class="text-blue-600 hover:text-blue-800 underline font-black bg-transparent border-none p-0 cursor-pointer text-[10px]">Assign to Me</button>`)}</span></div>
-                                    ${isEditable ? `
-                                    <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-[10px] font-bold uppercase !w-32 border border-gray-200 bg-white cursor-pointer block mt-0.5">
-                                        <option value="Flexible" ${job.laneType === 'Flexible' ? 'selected' : ''}>Flexible</option>
-                                        <option value="Express Lane" ${job.laneType === 'Express Lane' ? 'selected' : ''}>Express Lane</option>
-                                        <option value="Special Lane" ${job.laneType === 'Special Lane' ? 'selected' : ''}>Special Lane</option>
-                                    </select>
-                                    ` : `
-                                    <div class="text-red-600">Lane: ${job.laneType || 'Flexible'}</div>
-                                    `}
+                                    
+                                    <div class="w-full mt-1">
+                                        ${isEditable ? `
+                                        <div class="flex items-center gap-1 text-red-600 font-bold">
+                                            <span>LANE:</span>
+                                            <select onchange="updateJobField('${job.id}', 'laneType', this.value)" class="table-select text-[10px] font-bold uppercase text-red-600 bg-transparent border-none cursor-pointer p-0 outline-none hover:bg-red-50 focus:bg-red-50">
+                                                <option value="Flexible" ${job.laneType === 'Flexible' ? 'selected' : ''}>FLEXIBLE</option>
+                                                <option value="Express Lane" ${job.laneType === 'Express Lane' ? 'selected' : ''}>EXPRESS LANE</option>
+                                                <option value="Special Lane" ${job.laneType === 'Special Lane' ? 'selected' : ''}>SPECIAL LANE</option>
+                                            </select>
+                                        </div>
+                                        ` : `
+                                        <div class="text-[10px] font-bold uppercase tracking-wider text-red-600">LANE: ${job.laneType || 'FLEXIBLE'}</div>
+                                        `}
+                                    </div>
                                 </div>
                             </td>
                             
                             <!-- Source -->
-                            <td class="px-2 py-3 align-top">
+                            <td class="px-2 py-3 align-middle">
                                 <span class="px-1.5 py-0.5 rounded text-[10px] font-black uppercase ${job.source === 'Online' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'}">${job.source || 'Walk-in'}</span>
                             </td>
 
                             <!-- Arrival -->
-                            <td class="px-2 py-3 align-top">
-                                ${canEditArrival ? `
-                                <div class="flex items-center gap-1 shrink-0">
-                                    <select onchange="updateJobTimeField('${job.id}', 'arrival', this.value, 'hour')" class="table-select text-xs !w-12 shrink-0 !min-w-[48px] border border-gray-200 bg-white">
-                                        ${getHourOptions(convertTimeTo24Hour(job.arrival).split(':')[0])}
-                                    </select>
-                                    <span class="text-gray-400 font-bold">:</span>
-                                    <select onchange="updateJobTimeField('${job.id}', 'arrival', this.value, 'minute')" class="table-select text-xs !w-12 shrink-0 !min-w-[48px] border border-gray-200 bg-white">
-                                        ${getMinuteOptions(convertTimeTo24Hour(job.arrival).split(':')[1])}
-                                    </select>
-                                </div>
-                                ` : `<span class="block py-0.5 text-xs font-medium text-gray-600">${formatTime12Hour(job.arrival)}</span>`}
+                            <td class="px-2 py-3 align-middle">
+                                <span class="block py-0.5 text-xs font-medium text-gray-600">${formatTime12Hour(job.arrival)}</span>
                             </td>
                             
                             <!-- Departure -->
-                            <td class="px-2 py-3 align-top">
+                            <td class="px-2 py-3 align-middle">
                                 ${isEditable ? `
                                 <div class="flex items-center gap-1 shrink-0">
                                     <select onchange="updateJobTimeField('${job.id}', 'departure', this.value, 'hour')" class="table-select text-xs !w-12 shrink-0 !min-w-[48px] border border-gray-200 bg-white">
@@ -1442,19 +1454,19 @@
                             
 
                             <!-- Evaluation / Diagnosis -->
-                            <td class="px-2 py-3 align-top">
+                            <td class="px-2 py-3 align-middle">
                                 ${isEditable ? `
                                 <input type="text" id="evaluation-${job.id}" value="${job.evaluation || ''}" placeholder="Diagnosis..." onchange="updateJobField('${job.id}', 'evaluation', this.value)" class="table-select text-xs text-gray-900 border border-gray-200 !w-40 bg-white">
                                 ` : `<span class="block py-0.5 text-xs font-medium text-gray-600" id="evaluation-${job.id}">${job.evaluation || '-'}</span>`}
                             </td>
 
                             <!-- Promised Date -->
-                            <td class="px-2 py-3 align-top">
+                            <td class="px-2 py-3 align-middle">
                                 <span class="block py-0.5 text-xs font-bold text-gray-700">${job.promisedDate || '-'}</span>
                             </td>
 
                             <!-- C.O. Status -->
-                            <td class="px-2 py-3 align-top">
+                            <td class="px-2 py-3 align-middle">
                                 ${job.carryOverStatus ? `
                                 <span class="px-1.5 py-0.5 rounded text-[10px] font-black uppercase bg-orange-50 text-orange-700 border border-orange-100">
                                     ${job.carryOverStatus}
@@ -1465,7 +1477,7 @@
 
                                                       <!-- SLA status -->
                             ${showGoal ? `
-                            <td class="px-2 py-3 align-top">
+                            <td class="px-2 py-3 align-middle">
                                 <span class="px-1.5 py-0.5 rounded text-xs font-bold uppercase ${job.goalStatus === 'Successful' ? 'bg-green-50 text-green-700 border border-green-100' : job.goalStatus === 'Failed' ? 'bg-red-50 text-red-700 border border-red-100' : 'bg-gray-100 text-gray-700'}">
                                     ${job.goalStatus || 'N/A'}
                                 </span>
@@ -1473,7 +1485,7 @@
                             ` : ''}
                             
                             <!-- Status -->
-                            <td class="px-2 py-3 align-top">
+                            <td class="px-2 py-3 align-middle">
                                 ${isEditable ? `
                                 <select onchange="handleStatusChange('${job.id}', this.value, this)" 
                                         class="table-select font-bold text-xs uppercase !w-32 border rounded-xl py-1 px-1.5 bg-white outline-none transition cursor-pointer" 
@@ -1496,7 +1508,7 @@
                             </td>
 
                             <!-- Location -->
-                            <td class="px-2 py-3 align-top">
+                            <td class="px-2 py-3 align-middle">
                                 ${isEditable ? `
                                 <select onchange="updateJobField('${job.id}', 'location', this.value)" class="table-select font-bold text-xs uppercase !w-32 border rounded-xl py-1 px-1.5 bg-white outline-none focus:ring-2 focus:ring-blue-500/20 transition cursor-pointer" style="${job.location !== 'None' ? 'background-color:#eff6ff; color:#1e40af; border-color:#bfdbfe;' : 'color:#4b5563; background-color:#ffffff; border-color:#e5e7eb;'}">
                                     <option value="None" style="background-color: white; color: #374151;" ${job.location === 'None' ? 'selected' : ''}>Waiting Area</option>
@@ -1735,29 +1747,29 @@
             if (tbody) {
                 tbody.innerHTML = filtered.map(job => `
                     <tr class="${job.status === 'Completed' ? 'bg-green-50/10' : job.status === 'Carry Over' ? 'bg-orange-50/10' : ''}">
-                        <td class="px-2 py-3 align-top"><span class="block py-0.5 text-xs text-gray-600 font-medium">${job.dateReceived}</span></td>
-                        <td class="px-2 py-3 align-top"><span class="font-mono text-[10px] bg-gray-100 px-1.5 py-0.5 rounded text-gray-650 font-bold">${job.claimStub || 'N/A'}</span></td>
-                        <td class="px-2 py-3 align-top"><span class="inline-flex items-center justify-center w-fit font-bold text-xs uppercase tracking-wide bg-gray-100 text-gray-850 px-2 py-0.5 rounded border border-gray-250">${job.plate}</span></td>
-                        <td class="px-2 py-3 align-top"><span class="block py-0.5 text-xs font-bold text-gray-800">${job.name}</span></td>
-                        <td class="px-2 py-3 align-top"><span class="block py-0.5 font-mono text-xs text-gray-600">${formatPhoneNumber(job.contact)}</span></td>
-                        <td class="px-2 py-3 align-top">
+                        <td class="px-2 py-3 align-middle"><span class="block py-0.5 text-xs text-gray-600 font-medium">${job.dateReceived}</span></td>
+                        <td class="px-2 py-3 align-middle"><span class="inline-flex items-center justify-center w-fit font-bold text-xs uppercase tracking-wide bg-gray-100 text-gray-850 px-2 py-0.5 rounded border border-gray-250">${job.claimStub || 'N/A'}</span></td>
+                        <td class="px-2 py-3 align-middle"><span class="inline-flex items-center justify-center w-fit font-bold text-xs uppercase tracking-wide bg-gray-100 text-gray-850 px-2 py-0.5 rounded border border-gray-250">${job.plate}</span></td>
+                        <td class="px-2 py-3 align-middle"><span class="block py-0.5 text-xs font-bold text-gray-800">${job.name}</span></td>
+                        <td class="px-2 py-3 align-middle"><span class="block py-0.5 font-mono text-xs text-gray-600">${formatPhoneNumber(job.contact)}</span></td>
+                        <td class="px-2 py-3 align-middle">
                             <div class="text-xs font-bold text-gray-800 py-0.5">${job.vehicle}</div>
                             ${job.laneType ? `<span class="inline-block text-[9px] font-bold uppercase text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-100 mt-1">${job.laneType}</span>` : ''}
                         </td>
-                        <td class="px-2 py-3 align-top">
+                        <td class="px-2 py-3 align-middle">
                             <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${job.category && job.category.toUpperCase().includes('PMS') ? 'bg-blue-50 text-blue-600 border border-blue-100' : job.category && job.category.toUpperCase().includes('GR') ? 'bg-red-50 text-red-600 border border-red-100' : 'bg-green-50 text-green-600 border border-green-100'}">
                                 ${job.category}
                             </span>
                         </td>
-                        <td class="px-2 py-3 align-top"><span class="block py-0.5 text-xs font-bold text-gray-500 uppercase tracking-wider">${job.source}</span></td>
-                        <td class="px-2 py-3 align-top"><span class="block py-0.5 text-xs font-medium text-gray-600">${job.branch || 'Branch A'}</span></td>
-                        <td class="px-2 py-3 align-top">
+                        <td class="px-2 py-3 align-middle"><span class="block py-0.5 text-xs font-bold text-gray-500 uppercase tracking-wider">${job.source}</span></td>
+                        <td class="px-2 py-3 align-middle"><span class="block py-0.5 text-xs font-medium text-gray-600">${job.branch || 'Branch A'}</span></td>
+                        <td class="px-2 py-3 align-middle">
                             <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${job.goalStatus === 'Successful' ? 'bg-green-50 text-green-700 border border-green-100' : job.goalStatus === 'Failed' ? 'bg-red-50 text-red-700 border border-red-100' : 'bg-gray-100 text-gray-700'}">
                                 ${job.goalStatus || 'N/A'}
                             </span>
                         </td>
-                        <td class="px-2 py-3 align-top"><span class="block py-0.5 text-xs font-semibold text-gray-700">${job.saName || '-'}</span></td>
-                        <td class="px-2 py-3 align-top"><span class="px-2 py-0.5 rounded bg-gray-100 text-xs font-bold uppercase text-gray-700">${job.status}</span></td>
+                        <td class="px-2 py-3 align-middle"><span class="block py-0.5 text-xs font-semibold text-gray-700">${job.saName || '-'}</span></td>
+                        <td class="px-2 py-3 align-middle"><span class="px-2 py-0.5 rounded bg-gray-100 text-xs font-bold uppercase text-gray-700">${job.status}</span></td>
                         <td class="px-2 py-3 align-top text-gray-655 max-w-[200px] truncate" title="Evaluation: ${job.evaluation || '-'}&#10;Remarks: ${job.remarks || '-'}">
                             <span class="block py-0.5 text-xs font-semibold text-gray-700">Diag: ${job.evaluation || '-'}</span>
                             <span class="block text-[10px] text-gray-400">Rem: ${job.remarks || '-'}</span>
@@ -3138,10 +3150,18 @@
             if (sidebar) sidebar.classList.add('hidden');
 
             const mainContent = document.getElementById('main-content');
-            mainContent.classList.remove('p-6', 'md:p-10');
-            mainContent.classList.add('p-2');
-            document.getElementById('dashboard-header').classList.add('hidden');
+            mainContent.classList.remove('p-4', 'md:p-6', 'p-6', 'md:p-10');
+            mainContent.classList.add('p-0');
+            
+            const header = document.querySelector('header');
+            if(header) header.classList.add('hidden');
+            
+            const appShell = document.getElementById('app-shell');
+            if(appShell) appShell.classList.remove('layout-sidebar');
 
+            const dashHeader = document.getElementById('dashboard-header');
+            if(dashHeader) dashHeader.classList.add('hidden');
+            
             showSection('tv');
 
             // TV synchronization via REST API polling
@@ -3233,8 +3253,8 @@
         }
 
         function renderTV() {
-            // Group 1: Waiting Jobs (Upcoming Queue) - Monitoring status shows on TV waiting list
-            const waitingJobs = allJobs.filter(j => j.status === 'Monitoring');
+            // Group 1: Waiting Jobs (Upcoming Queue) - Monitoring AND Waiting status shows on TV waiting list
+            const waitingJobs = allJobs.filter(j => j.status === 'Monitoring' || j.status === 'Waiting');
             // Group 2: Released (Ready, Ready to Release)
             const releasedAll = allJobs.filter(j => j.status === 'Ready' || j.status === 'Ready to Release');
             // Group 3: Carry Over (Carry Over)
@@ -3325,7 +3345,7 @@
                 tvGRS.innerHTML = liftsHTML;
             }
             // Slide 3: Lane Monitoring lists (Express, Flexible, Specialty)
-            const activeLaneJobs = allJobs.filter(j => (j.status === 'Monitoring' || j.status === 'Ready' || j.status === 'Ready to Release' || (j.location && j.location.startsWith('Lift'))) && j.status !== 'Completed' && j.status !== 'Released');
+            const activeLaneJobs = allJobs.filter(j => (j.status === 'Monitoring' || j.status === 'Waiting' || j.status === 'In Progress' || j.status === 'Ready' || j.status === 'Ready to Release' || (j.location && j.location.startsWith('Lift'))) && j.status !== 'Completed' && j.status !== 'Released');
             const renderLaneJobCard = (job) => {
                 const theme = getServiceTheme(job.category);
                 let statusBadge = '';
@@ -3333,6 +3353,10 @@
                     statusBadge = `<span class="${theme.bgBadge} text-white font-extrabold text-[8px] uppercase tracking-wider px-2 py-0.5 rounded-full">${job.location}</span>`;
                 } else if (job.status === 'Ready' || job.status === 'Ready to Release') {
                     statusBadge = `<span class="bg-green-150 text-green-700 border border-green-200 font-extrabold text-[8px] uppercase tracking-wider px-2 py-0.5 rounded-full">READY</span>`;
+                } else if (job.status === 'Waiting') {
+                    statusBadge = `<span class="bg-amber-50 text-amber-700 border border-amber-200 font-extrabold text-[8px] uppercase tracking-wider px-2 py-0.5 rounded-full">WAITING</span>`;
+                } else if (job.status === 'In Progress') {
+                    statusBadge = `<span class="bg-purple-50 text-purple-700 border border-purple-200 font-extrabold text-[8px] uppercase tracking-wider px-2 py-0.5 rounded-full">IN PROGRESS</span>`;
                 } else {
                     statusBadge = `<span class="bg-blue-50 text-blue-700 border border-blue-100 font-extrabold text-[8px] uppercase tracking-wider px-2 py-0.5 rounded-full">MONITORING</span>`;
                 }

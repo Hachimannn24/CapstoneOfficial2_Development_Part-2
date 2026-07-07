@@ -118,7 +118,7 @@ class JobController
             }
 
             // Branch partitioning
-            if ($user['role'] !== 'owner' && $user['role'] !== 'admin') {
+            if ($user['role'] !== 'owner' && $user['role'] !== 'admin' && $user['role'] !== 'assistant') {
                 $conditions[] = "branch = ?";
                 $params[]     = $user['branch'] ?: 'Branch A';
             }
@@ -187,7 +187,7 @@ class JobController
             }
 
             // Branch assignment based on role
-            $finalBranch = ($user['role'] === 'owner' || $user['role'] === 'admin')
+            $finalBranch = ($user['role'] === 'owner' || $user['role'] === 'admin' || $user['role'] === 'assistant')
                 ? ($branch ?: 'Branch A')
                 : ($user['branch'] ?: 'Branch A');
 
@@ -243,7 +243,7 @@ class JobController
             }
 
             // Branch Security
-            if ($user['role'] !== 'owner' && $user['role'] !== 'admin' && $job['branch'] !== $user['branch']) {
+            if ($user['role'] !== 'owner' && $user['role'] !== 'admin' && $user['role'] !== 'assistant' && $job['branch'] !== $user['branch']) {
                 http_response_code(403);
                 echo json_encode(['message' => 'Access forbidden. This vehicle belongs to another branch.']);
                 return;
@@ -391,7 +391,7 @@ class JobController
             }
 
             // Branch Security
-            if ($user['role'] !== 'owner' && $user['role'] !== 'admin' && $job['branch'] !== $user['branch']) {
+            if ($user['role'] !== 'owner' && $user['role'] !== 'admin' && $user['role'] !== 'assistant' && $job['branch'] !== $user['branch']) {
                 http_response_code(403);
                 echo json_encode(['message' => 'Access forbidden. This vehicle belongs to another branch.']);
                 return;
@@ -511,7 +511,7 @@ class JobController
             }
 
             // Branch Security
-            if ($user['role'] !== 'owner' && $user['role'] !== 'admin' && $job['branch'] !== $user['branch']) {
+            if ($user['role'] !== 'owner' && $user['role'] !== 'admin' && $user['role'] !== 'assistant' && $job['branch'] !== $user['branch']) {
                 http_response_code(403);
                 echo json_encode(['message' => 'Access forbidden. This vehicle belongs to another branch.']);
                 return;
