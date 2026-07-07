@@ -116,5 +116,9 @@ CREATE TABLE IF NOT EXISTS `jobs` (
     INDEX `idx_branch` (`branch`),
     INDEX `idx_date_received` (`date_received`),
     INDEX `idx_date_completed` (`date_completed`),
-    INDEX `idx_source` (`source`)
+    INDEX `idx_source` (`source`),
+    INDEX `idx_plate` (`plate`),
+    INDEX `idx_name` (`name`),
+    INDEX `idx_claim_stub` (`claim_stub`),
+    INDEX `idx_vehicle` (`vehicle`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
