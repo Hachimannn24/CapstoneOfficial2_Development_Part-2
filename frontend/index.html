@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> HonTech</title>
-    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="icon" type="image/png" href="favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -33,7 +33,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="css/main.css">
     <style>
         :root {
             /* Default Red Theme */
@@ -522,8 +522,8 @@
         <!-- Left Sidebar (Google Chat style) -->
         <aside id="app-sidebar" class="bg-gray-50 border-r border-gray-200 flex flex-col h-full transition-all duration-300 w-64 select-none shrink-0">
             <!-- Sidebar Header / Logo -->
-            <div class="h-20 flex items-center justify-between px-6 border-b border-gray-200 shrink-0 bg-gray-50">
-                <div class="flex items-center gap-3 overflow-hidden">
+            <div class="h-20 flex items-center justify-between px-4 border-b border-gray-200 shrink-0 bg-gray-50">
+                <div class="flex items-center gap-1.5 overflow-hidden">
                     <!-- Sidebar Logo -->
                     <div class="shrink-0 flex items-center justify-center w-8 h-8 text-red-600">
                         <i data-lucide="wrench" class="w-8 h-8"></i>
@@ -554,14 +554,7 @@
             <div class="p-4 border-t border-gray-200 bg-gray-100/30 shrink-0 relative">
                 <!-- Sidebar Dropdown Menu (Pops up) -->
                 <div id="sidebar-user-dropdown" class="hidden absolute left-4 bottom-16 w-56 bg-white rounded-2xl border border-gray-200 shadow-xl z-[999] py-4 divide-y divide-gray-100">
-                    <!-- Navigation Layout Section -->
-                    <div class="px-5 py-3">
-                        <span class="block text-[10px] font-black uppercase tracking-wider text-gray-400 mb-2">Navigation Layout</span>
-                        <div class="flex items-center gap-2">
-                            <button onclick="setLayout('sidebar')" id="sidebar-layout-btn-sidebar" class="flex-1 px-2.5 py-1.5 rounded-lg text-[11px] font-bold border transition text-center hover:bg-gray-50 bg-gray-50 border-gray-300 text-gray-900">Sidebar</button>
-                            <button onclick="setLayout('top')" id="sidebar-layout-btn-top" class="flex-1 px-2.5 py-1.5 rounded-lg text-[11px] font-bold border transition text-center hover:bg-gray-50 bg-white border-gray-200 text-gray-700">Top Bar</button>
-                        </div>
-                    </div>
+
 
                     <!-- Account Settings Link -->
                     <div class="px-3 py-2">
@@ -651,14 +644,7 @@
 
                     <!-- Dropdown Menu -->
                     <div id="user-dropdown" class="hidden absolute right-0 mt-3 w-56 bg-white rounded-2xl border border-gray-200 shadow-xl z-[999] py-4 divide-y divide-gray-100">
-                        <!-- Navigation Layout Section -->
-                        <div class="px-5 py-3">
-                            <span class="block text-[10px] font-black uppercase tracking-wider text-gray-400 mb-2">Navigation Layout</span>
-                            <div class="flex items-center gap-2">
-                                <button onclick="setLayout('sidebar')" id="layout-btn-sidebar" class="flex-1 px-2.5 py-1.5 rounded-lg text-[11px] font-bold border transition text-center hover:bg-gray-50 bg-gray-50 border-gray-300 text-gray-900">Sidebar</button>
-                                <button onclick="setLayout('top')" id="layout-btn-top" class="flex-1 px-2.5 py-1.5 rounded-lg text-[11px] font-bold border transition text-center hover:bg-gray-50 bg-white border-gray-200 text-gray-700">Top Bar</button>
-                            </div>
-                        </div>
+
 
                         <!-- Account Settings Link -->
                         <div class="px-3 py-2">
@@ -680,7 +666,7 @@
             </div>
         </header>
 
-        <main class="flex-1 overflow-y-auto relative p-6 md:p-10" id="main-content">
+        <main class="flex-1 overflow-y-auto relative p-4 md:p-6" id="main-content">
 
             <div id="dashboard-header"
                 class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
@@ -1156,7 +1142,7 @@
                         </div>
 
                         <div class="overflow-x-auto max-h-[300px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
-                            <table class="w-full text-left whitespace-nowrap min-w-[700px]">
+                            <table class="w-full text-left">
                                 <thead class="sticky top-0 z-10 bg-white">
                                     <tr class="bg-white border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
                                         <th class="px-6 py-4 bg-white">Staff Name</th>
@@ -1322,7 +1308,7 @@
                         </div>
                     </div>
                     <div class="overflow-x-auto max-h-[300px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
-                        <table class="w-full text-left whitespace-nowrap min-w-[750px]">
+                        <table class="w-full text-left min-w-full">
                             <thead class="sticky top-0 z-10 bg-gray-50">
                                 <tr class="bg-gray-50 border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
                                     <th class="px-3 py-3.5 bg-gray-50">Customer Name</th>
@@ -1354,7 +1340,7 @@
                         </div>
                     </div>
                     <div class="overflow-x-auto max-h-[400px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll">
-                        <table class="w-full text-left whitespace-nowrap min-w-[1250px]">
+                        <table class="w-full text-left min-w-full">
                             <thead>
                                 <tr>
                                     <th>Claim Stub</th>
@@ -1401,7 +1387,7 @@
                         </div>
                     </div>
                     <div class="overflow-x-auto max-h-[300px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
-                        <table class="w-full text-left whitespace-nowrap min-w-[750px]">
+                        <table class="w-full text-left min-w-full">
                             <thead class="sticky top-0 z-10 bg-gray-50">
                                 <tr class="bg-gray-50 border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
                                     <th class="px-3 py-3.5 bg-gray-55">Plate No.</th>
@@ -1496,7 +1482,7 @@
                     
                     <!-- Table -->
                     <div class="overflow-x-auto max-h-[400px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
-                        <table class="w-full text-left border-collapse min-w-[1000px]">
+                        <table class="w-full text-left border-collapse min-w-full">
                             <thead class="sticky top-0 z-10 bg-gray-50">
                                 <tr class="bg-gray-50 border-b border-gray-200 text-gray-500 text-[10px] font-black uppercase tracking-widest">
                                     <th class="px-3 py-3.5 bg-gray-50">Date Recv</th>
@@ -2607,6 +2593,14 @@
         // Base fetch helper to deal with absolute URL resolutions and JSON conversions
         async function apiRequest(url, options = {}) {
             try {
+                // Dynamically build the absolute path so we can survive folder renaming
+                const path = window.location.pathname;
+                const basePath = path.includes('/frontend') 
+                    ? path.substring(0, path.lastIndexOf('/frontend')) + '/api' 
+                    : path.replace(/\/$/, '') + '/api';
+
+                const finalUrl = url.replace(/^\/api/, basePath);
+
                 const defaultOptions = {
                     headers: { 'Content-Type': 'application/json' },
                     ...options
@@ -2614,7 +2608,7 @@
                 if (defaultOptions.body && typeof defaultOptions.body === 'object') {
                     defaultOptions.body = JSON.stringify(defaultOptions.body);
                 }
-                const response = await fetch(url, defaultOptions);
+                const response = await fetch(finalUrl, defaultOptions);
                 const data = await response.json();
 
                 if (!response.ok) {
@@ -2787,6 +2781,14 @@
             await loadData();
             buildNavbar(role);
 
+            // Pre-load all sections immediately so navigation is instantaneous
+            if (role === 'owner') renderReports();
+            if (role === 'owner' || role === 'admin') {
+                renderStaffTables();
+                renderStaffManagement();
+            }
+            loadUserProfile();
+
             // Start sending presence heartbeat every 30 seconds
             if (presencePingInterval) clearInterval(presencePingInterval);
             presencePingInterval = setInterval(async () => {
@@ -2885,7 +2887,7 @@
 
             // Append Profile button for all roles
             navHTML += `<button onclick="showSection('profile', this)" class="nav-btn px-4 py-2 rounded-lg font-bold transition hover:bg-gray-100 flex items-center gap-2"><i data-lucide="user-cog" class="w-4 h-4"></i> My Profile</button>`;
-            sidebarNavHTML += `<button onclick="showSection('profile', this)" class="nav-btn w-full px-3 py-2.5 rounded-xl font-semibold transition hover:bg-gray-100 flex items-center gap-3 text-gray-600"><i data-lucide="user-cog" class="w-5 h-5 shrink-0"></i><span class="nav-text truncate">My Profile</span></button>`;
+
 
             if (nav) nav.innerHTML = navHTML;
             if (sidebarNav) sidebarNav.innerHTML = sidebarNavHTML;
@@ -3111,12 +3113,8 @@
                 'support': 'Help & Support Center'
             };
             if (titles[id]) document.getElementById('view-title').innerText = titles[id];
-
-            if (id === 'dashboard') renderReports();
-            if (id === 'queue') renderStaffTables();
-            if (id === 'staff') renderStaffManagement();
-            if (id === 'profile') loadUserProfile();
             
+
             if (id === 'tv') {
                 (async () => {
                     try {
@@ -4116,7 +4114,7 @@
                             </div>
 
                             <div class="overflow-x-auto max-h-[400px] overflow-y-auto border border-gray-200 rounded-xl custom-scroll bg-white">
-                                <table class="w-full text-left whitespace-nowrap min-w-[1250px]">
+                                <table class="w-full text-left min-w-full">
                                     ${getTableHeaderHtml()}
                                     <tbody>
                                         ${renderJobRows(filteredActiveJobs) || `<tr><td colspan="${showGoal ? 10 : 9}" class="text-center py-8 text-gray-500 font-medium">No active vehicles in the queue.</td></tr>`}
