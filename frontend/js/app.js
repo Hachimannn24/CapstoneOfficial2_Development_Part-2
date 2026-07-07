@@ -352,9 +352,22 @@
             setTimeout(() => {
                 const savedLayout = localStorage.getItem('hontech-layout') || 'sidebar';
                 const activeNav = (savedLayout === 'sidebar') ? sidebarNav : nav;
-                const firstBtn = activeNav ? activeNav.querySelector('.nav-btn') : null;
-                if (firstBtn) showSection(defaultView, firstBtn);
-                else showSection(defaultView);
+                
+                let targetView = localStorage.getItem('hontech-active-section');
+                
+                // Verify if the target section is valid and exists in the DOM
+                if (!targetView || !document.getElementById(`section-${targetView}`)) {
+                    targetView = defaultView;
+                }
+                
+                let targetBtn = null;
+                if (activeNav) {
+                    targetBtn = activeNav.querySelector(`.nav-btn[onclick*="showSection('${targetView}'"]`);
+                    if (!targetBtn) targetBtn = activeNav.querySelector('.nav-btn');
+                }
+                
+                if (targetBtn) showSection(targetView, targetBtn);
+                else showSection(targetView);
             }, 50);
         }
 
@@ -536,6 +549,9 @@
         }
 
         function showSection(id, btnElement) {
+            // Save current section to local storage for persistence across reloads
+            localStorage.setItem('hontech-active-section', id);
+            
             document.querySelectorAll('.section-content').forEach(s => s.classList.add('hidden'));
             const targetSec = document.getElementById(`section-${id}`);
             if (targetSec) targetSec.classList.remove('hidden');
