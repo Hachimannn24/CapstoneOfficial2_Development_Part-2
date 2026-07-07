@@ -1347,9 +1347,9 @@
                             <!-- Plate -->
                             <td class="px-2 py-3">
                                 <div class="flex flex-col gap-1">
-                                    <span class="font-black italic text-gray-900 text-base">${job.plate}</span>
+                                    <span class="inline-flex items-center justify-center w-fit font-bold text-xs uppercase tracking-wide bg-gray-100 text-gray-800 px-2 py-0.5 rounded border border-gray-250">${job.plate}</span>
                                     ${(job.promisedDate || job.carryOverStatus) ? `
-                                    <span class="inline-flex items-center justify-center w-fit bg-orange-100 text-orange-800 text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded border border-orange-200">
+                                    <span class="inline-flex items-center justify-center w-fit bg-orange-100 text-orange-800 text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded border border-orange-200">
                                         Carry-Over
                                     </span>
                                     ` : ''}
@@ -1358,7 +1358,7 @@
                             
                             <!-- Model & Category -->
                             <td class="px-2 py-3">
-                                <div class="font-bold text-gray-900 text-sm">${job.vehicle}</div>
+                                <div class="font-semibold text-gray-800 text-sm">${job.vehicle}</div>
                                 <div class="text-[10px] text-gray-500 font-bold uppercase mb-1 flex items-center gap-2 flex-wrap">
                                     ${isEditable ? `
                                     <div class="flex flex-col gap-1">
@@ -1717,31 +1717,31 @@
             if (tbody) {
                 tbody.innerHTML = filtered.map(job => `
                     <tr class="${job.status === 'Completed' ? 'bg-green-50/10' : job.status === 'Carry Over' ? 'bg-orange-50/10' : ''}">
-                        <td class="px-3 py-4">${job.dateReceived}</td>
-                        <td class="px-3 py-4"><span class="font-mono text-[11px] bg-gray-100 px-2.5 py-1 rounded text-gray-600 font-bold">${job.claimStub || 'N/A'}</span></td>
-                        <td class="px-3 py-4"><span class="font-black italic text-gray-900 text-sm">${job.plate}</span></td>
-                        <td class="px-3 py-4">${job.name}</td>
-                        <td class="px-3 py-4 font-mono">${formatPhoneNumber(job.contact)}</td>
-                        <td class="px-3 py-4">
-                            <div>${job.vehicle}</div>
-                            ${job.laneType ? `<span class="inline-block text-[9px] font-black uppercase text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-100 mt-1">${job.laneType}</span>` : ''}
+                        <td class="px-2 py-3 text-xs text-gray-600 font-medium">${job.dateReceived}</td>
+                        <td class="px-2 py-3"><span class="font-mono text-[10px] bg-gray-100 px-1.5 py-0.5 rounded text-gray-650 font-bold">${job.claimStub || 'N/A'}</span></td>
+                        <td class="px-2 py-3"><span class="inline-flex items-center justify-center w-fit font-bold text-xs uppercase tracking-wide bg-gray-100 text-gray-850 px-2 py-0.5 rounded border border-gray-250">${job.plate}</span></td>
+                        <td class="px-2 py-3 text-sm font-semibold text-gray-800">${job.name}</td>
+                        <td class="px-2 py-3 font-mono text-xs text-gray-600">${formatPhoneNumber(job.contact)}</td>
+                        <td class="px-2 py-3">
+                            <div class="text-sm font-semibold text-gray-800">${job.vehicle}</div>
+                            ${job.laneType ? `<span class="inline-block text-[9px] font-bold uppercase text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-100 mt-1">${job.laneType}</span>` : ''}
                         </td>
-                        <td class="px-3 py-4">
-                            <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase ${job.category && job.category.toUpperCase().includes('PMS') ? 'bg-blue-50 text-blue-600 border border-blue-100' : job.category && job.category.toUpperCase().includes('GR') ? 'bg-red-50 text-red-600 border border-red-100' : 'bg-green-50 text-green-600 border border-green-100'}">
+                        <td class="px-2 py-3">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${job.category && job.category.toUpperCase().includes('PMS') ? 'bg-blue-50 text-blue-600 border border-blue-100' : job.category && job.category.toUpperCase().includes('GR') ? 'bg-red-50 text-red-600 border border-red-100' : 'bg-green-50 text-green-600 border border-green-100'}">
                                 ${job.category}
                             </span>
                         </td>
-                        <td class="px-3 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider">${job.source}</td>
-                        <td class="px-3 py-4 text-xs font-semibold text-gray-655">${job.branch || 'Branch A'}</td>
-                        <td class="px-3 py-4">
-                            <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase ${job.goalStatus === 'Successful' ? 'bg-green-50 text-green-700 border border-green-100' : job.goalStatus === 'Failed' ? 'bg-red-50 text-red-700 border border-red-100' : 'bg-gray-100 text-gray-700'}">
+                        <td class="px-2 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider">${job.source}</td>
+                        <td class="px-2 py-3 text-xs font-medium text-gray-600">${job.branch || 'Branch A'}</td>
+                        <td class="px-2 py-3">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${job.goalStatus === 'Successful' ? 'bg-green-50 text-green-700 border border-green-100' : job.goalStatus === 'Failed' ? 'bg-red-50 text-red-700 border border-red-100' : 'bg-gray-100 text-gray-700'}">
                                 ${job.goalStatus || 'N/A'}
                             </span>
                         </td>
-                        <td class="px-3 py-4 text-xs font-bold text-gray-800">${job.saName || '-'}</td>
-                        <td class="px-3 py-4"><span class="px-2 py-0.5 rounded bg-gray-100 text-xs font-bold uppercase text-gray-700">${job.status}</span></td>
-                        <td class="px-3 py-4 text-gray-655 max-w-[200px] truncate" title="Evaluation: ${job.evaluation || '-'}&#10;Remarks: ${job.remarks || '-'}">
-                            <span class="block font-bold">Diag: ${job.evaluation || '-'}</span>
+                        <td class="px-2 py-3 text-xs font-semibold text-gray-700">${job.saName || '-'}</td>
+                        <td class="px-2 py-3"><span class="px-2 py-0.5 rounded bg-gray-100 text-xs font-bold uppercase text-gray-700">${job.status}</span></td>
+                        <td class="px-2 py-3 text-gray-655 max-w-[200px] truncate" title="Evaluation: ${job.evaluation || '-'}&#10;Remarks: ${job.remarks || '-'}">
+                            <span class="block text-xs font-semibold text-gray-700">Diag: ${job.evaluation || '-'}</span>
                             <span class="block text-[10px] text-gray-400">Rem: ${job.remarks || '-'}</span>
                         </td>
                     </tr>
