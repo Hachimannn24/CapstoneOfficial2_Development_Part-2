@@ -152,9 +152,40 @@
         .sidebar-collapsed #sidebar-toggle-icon {
             transform: rotate(180deg);
         }
+        /* Sidebar toggle buttons hover visibility */
+        .sidebar-header .sidebar-toggle-btn {
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+        }
+        .sidebar-header:hover .sidebar-toggle-btn {
+            opacity: 1 !important;
+        }
+
         .sidebar-collapsed .sidebar-header {
             justify-content: center !important;
             padding: 0 !important;
+            position: relative;
+        }
+        .sidebar-collapsed .logo-container {
+            opacity: 1;
+            transition: opacity 0.2s ease-in-out;
+            margin: 0 auto;
+        }
+        .sidebar-collapsed .sidebar-header:hover .logo-container {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .sidebar-collapsed #sidebar-expand-btn {
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            margin: 0 !important;
+        }
+        .sidebar-collapsed .sidebar-header:hover #sidebar-expand-btn {
+            opacity: 1 !important;
         }
         .sidebar-collapsed .nav-btn {
             justify-content: center !important;
@@ -528,7 +559,7 @@
         <aside id="app-sidebar" class="bg-gray-50 border-r border-gray-200 flex flex-col h-full transition-all duration-300 w-64 select-none shrink-0">
             <!-- Sidebar Header / Logo -->
             <div class="sidebar-header h-20 flex items-center justify-between px-4 border-b border-gray-200 shrink-0 bg-gray-50 transition-all duration-300">
-                <div class="flex items-center gap-1.5 overflow-hidden sidebar-expand-only">
+                <div class="flex items-center gap-1.5 overflow-hidden logo-container">
                     <!-- Sidebar Logo -->
                     <div class="shrink-0 flex items-center justify-center w-8 h-8 text-red-600">
                         <i data-lucide="wrench" class="w-8 h-8"></i>
@@ -541,10 +572,10 @@
                     </div>
                 </div>
                 <!-- Collapse Button -->
-                <button onclick="toggleSidebar()" class="p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 focus:outline-none transition sidebar-expand-only">
+                <button onclick="toggleSidebar()" class="sidebar-toggle-btn p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 focus:outline-none transition sidebar-expand-only">
                     <i data-lucide="chevrons-left" id="sidebar-toggle-icon" class="w-4 h-4"></i>
                 </button>
-                <button onclick="toggleSidebar()" class="p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 focus:outline-none transition hidden sidebar-collapsed-only" id="sidebar-expand-btn">
+                <button onclick="toggleSidebar()" class="sidebar-toggle-btn p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 focus:outline-none transition hidden sidebar-collapsed-only" id="sidebar-expand-btn">
                     <i data-lucide="chevrons-right" class="w-4 h-4"></i>
                 </button>
             </div>
